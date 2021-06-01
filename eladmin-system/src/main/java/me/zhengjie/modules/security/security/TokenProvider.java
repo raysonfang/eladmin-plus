@@ -51,7 +51,7 @@ public class TokenProvider implements InitializingBean {
 
     private final SecurityProperties properties;
     private final RedisUtils redisUtils;
-    public static final String AUTHORITIES_KEY = "auth";
+    public static final String AUTHORITIES_KEY = "user";
     private JwtParser jwtParser;
     private JwtBuilder jwtBuilder;
 

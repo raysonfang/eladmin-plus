@@ -87,5 +87,13 @@ public interface UserMapper extends CommonMapper<User> {
             + "<foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'> #{item} </foreach>"
             + "</script>")
     int countByRoles(@Param("ids") Set<Long> ids);
-
+    
+    /**
+     * 根据角色中的部门查询
+     * @param deptId /
+     * @return /
+     */
+    @Select("SELECT u.user_id as id, u.* FROM sys_user u, sys_users_roles r, sys_roles_depts d WHERE "
+            + "u.user_id = r.user_id AND r.role_id = d.role_id AND r.dept_id = #{deptId} group by u.user_id")
+    List<User> findByRoleDeptId(@Param("deptId")Long deptId);
 }

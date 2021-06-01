@@ -36,6 +36,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Zheng Jie
@@ -52,7 +53,6 @@ public class MenuController {
     private final MenuMapper menuMapper;
     private static final String ENTITY_NAME = "menu";
 
-    @Log("查询菜单")
     @ApiOperation("查询菜单")
     @GetMapping
     @PreAuthorize("@el.check('menu:list')")
@@ -75,8 +75,19 @@ public class MenuController {
         List<MenuDto> menuDtos = menuService.buildTree(menuDtoList);
         return new ResponseEntity<>(menuService.buildMenus(menuDtos),HttpStatus.OK);
     }
-
-    @Log("查询菜单")
+    
+    @ApiOperation("根据菜单ID返回所有子节点ID，包含自身ID")
+    @GetMapping(value = "/child")
+    @PreAuthorize("@el.check('menu:list','roles:list')")
+    public ResponseEntity<Object> child(@RequestParam Long id){
+        Set<Menu> menuSet = new HashSet<>();
+        List<MenuDto> menuList = menuService.getMenus(id);
+        menuSet.add(menuService.getById(id));
+        menuSet = menuService.getChildMenus(ConvertUtil.convertList(menuList, Menu.class), menuSet);
+        Set<Long> ids = menuSet.stream().map(Menu::getId).collect(Collectors.toSet());
+        return new ResponseEntity<>(ids,HttpStatus.OK);
+    }
+    
     @ApiOperation("查询菜单:根据ID获取同级与上级数据")
     @PostMapping("/superior")
     @PreAuthorize("@el.check('menu:list')")
@@ -128,7 +139,6 @@ public class MenuController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Log("导出菜单数据")
     @ApiOperation("导出菜单数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('menu:list')")

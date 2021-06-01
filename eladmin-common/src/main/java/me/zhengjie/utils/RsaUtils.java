@@ -2,6 +2,7 @@ package me.zhengjie.utils;
 
 import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Cipher;
+import java.io.ByteArrayOutputStream;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -14,9 +15,9 @@ import java.security.spec.X509EncodedKeySpec;
  * @date 2020-05-18
  **/
 public class RsaUtils {
-
+    
     private static final String SRC = "123456";
-
+    
     public static void main(String[] args) throws Exception {
         System.out.println("\n");
         RsaKeyPair keyPair = generateKeyPair();
@@ -28,7 +29,7 @@ public class RsaUtils {
         test2(keyPair);
         System.out.println("\n");
     }
-
+    
     /**
      * 公钥加密私钥解密
      */
@@ -46,7 +47,7 @@ public class RsaUtils {
         }
         System.out.println("***************** 公钥加密私钥解密结束 *****************");
     }
-
+    
     /**
      * 私钥加密公钥解密
      * @throws Exception /
@@ -65,7 +66,7 @@ public class RsaUtils {
         }
         System.out.println("***************** 私钥加密公钥解密结束 *****************");
     }
-
+    
     /**
      * 公钥解密
      *
@@ -80,10 +81,10 @@ public class RsaUtils {
         PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, publicKey);
-        byte[] result = cipher.doFinal(Base64.decodeBase64(text));
+        byte[] result = doLongerCipherFinal(Cipher.DECRYPT_MODE, cipher, Base64.decodeBase64(text));
         return new String(result);
     }
-
+    
     /**
      * 私钥加密
      *
@@ -98,10 +99,10 @@ public class RsaUtils {
         PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-        byte[] result = cipher.doFinal(text.getBytes());
+        byte[] result = doLongerCipherFinal(Cipher.ENCRYPT_MODE, cipher, text.getBytes());
         return Base64.encodeBase64String(result);
     }
-
+    
     /**
      * 私钥解密
      *
@@ -116,10 +117,10 @@ public class RsaUtils {
         PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec5);
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] result = cipher.doFinal(Base64.decodeBase64(text));
+        byte[] result = doLongerCipherFinal(Cipher.DECRYPT_MODE, cipher, Base64.decodeBase64(text));
         return new String(result);
     }
-
+    
     /**
      * 公钥加密
      *
@@ -133,10 +134,27 @@ public class RsaUtils {
         PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec2);
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] result = cipher.doFinal(text.getBytes());
+        byte[] result = doLongerCipherFinal(Cipher.ENCRYPT_MODE, cipher, text.getBytes());
         return Base64.encodeBase64String(result);
     }
-
+    
+    private static byte[] doLongerCipherFinal(int opMode,Cipher cipher, byte[] source) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        if (opMode == Cipher.DECRYPT_MODE) {
+            out.write(cipher.doFinal(source));
+        } else {
+            int offset = 0;
+            int totalSize = source.length;
+            while (totalSize - offset > 0) {
+                int size = Math.min(cipher.getOutputSize(0) - 11, totalSize - offset);
+                out.write(cipher.doFinal(source, offset, size));
+                offset += size;
+            }
+        }
+        out.close();
+        return out.toByteArray();
+    }
+    
     /**
      * 构建RSA密钥对
      *
@@ -153,28 +171,28 @@ public class RsaUtils {
         String privateKeyString = Base64.encodeBase64String(rsaPrivateKey.getEncoded());
         return new RsaKeyPair(publicKeyString, privateKeyString);
     }
-
-
+    
+    
     /**
      * RSA密钥对对象
      */
     public static class RsaKeyPair {
-
+        
         private final String publicKey;
         private final String privateKey;
-
+        
         public RsaKeyPair(String publicKey, String privateKey) {
             this.publicKey = publicKey;
             this.privateKey = privateKey;
         }
-
+        
         public String getPublicKey() {
             return publicKey;
         }
-
+        
         public String getPrivateKey() {
             return privateKey;
         }
-
+        
     }
 }

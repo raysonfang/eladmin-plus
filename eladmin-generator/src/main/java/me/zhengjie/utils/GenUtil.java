@@ -155,6 +155,7 @@ public class GenUtil {
         List<String> templates = getAdminTemplateNamesForEladmin();
         for (String templateName : templates) {
             Template template = engine.getTemplate("generator/eladmin/" + templateName + ".ftl");
+            String rootPath = System.getProperty("user.dir");
             String filePath = getAdminFilePathForEladmin(templateName, genConfig, genMap.get("className").toString(), tempPath + "eladmin" + File.separator);
             assert filePath != null;
             File file = new File(filePath);

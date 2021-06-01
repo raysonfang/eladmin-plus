@@ -6,6 +6,7 @@ import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.service.DictDetailService;
+import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.FileUtil;
 import me.zhengjie.modules.system.domain.Dict;
@@ -122,8 +123,8 @@ public class DictServiceImpl extends CommonServiceImpl<Dict> implements DictServ
     }
 
     private void delCaches(Dict dict){
-        redisUtils.del("dictDetail::name:" + dict.getName());
-        redisUtils.del("dictDetail::dictId:" + dict.getId());
-        redisUtils.del("dict::id:" + dict.getId());
+        redisUtils.del(CacheKey.DICTDEAIL_DICTNAME + dict.getName());
+        redisUtils.del(CacheKey.DICTDEAIL_DICTID + dict.getId());
+        redisUtils.del(CacheKey.DICT_ID + dict.getId());
     }
 }

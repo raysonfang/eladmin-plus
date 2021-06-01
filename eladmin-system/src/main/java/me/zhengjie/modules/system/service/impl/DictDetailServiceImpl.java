@@ -9,6 +9,7 @@ import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.domain.Dict;
 import me.zhengjie.modules.system.service.mapper.DictMapper;
+import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.modules.system.domain.DictDetail;
 import me.zhengjie.modules.system.service.DictDetailService;
@@ -62,7 +63,7 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetail> impleme
         wrapper.lambda().eq(Dict::getName, dictName);
         Dict dict = dictMapper.selectOne(wrapper);
         List<DictDetailDto> ret = dictDetailMapper.getDictDetailsByDictName(dictName);
-        redisUtils.set("dictDetail::dictId:"+dict.getId(), ret);
+        redisUtils.set(CacheKey.DICTDEAIL_DICTID + dict.getId(), ret);
         return ret;
     }
 
@@ -114,6 +115,6 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetail> impleme
     }
 
     private void delCaches(Long dictId){
-        redisUtils.del("dictDetail::dictId:" + dictId);
+        redisUtils.del(CacheKey.DICTDEAIL_DICTID + dictId);
     }
 }

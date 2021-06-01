@@ -38,7 +38,7 @@ CREATE TABLE `code_column_config` (
   `date_annotation` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`column_id`) USING BTREE,
   KEY `idx_table_name` (`table_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='代码生成字段信息存储';
+) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='代码生成字段信息存储';
 
 -- ----------------------------
 -- Table structure for code_gen_config
@@ -57,7 +57,7 @@ CREATE TABLE `code_gen_config` (
   `api_alias` varchar(255) DEFAULT NULL COMMENT '接口名称',
   PRIMARY KEY (`config_id`) USING BTREE,
   KEY `idx_table_name` (`table_name`(100))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='代码生成器配置';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='代码生成器配置';
 
 -- ----------------------------
 -- Table structure for mnt_app
@@ -77,7 +77,7 @@ CREATE TABLE `mnt_app` (
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`app_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='应用管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='应用管理';
 
 -- ----------------------------
 -- Records of mnt_app
@@ -100,7 +100,7 @@ CREATE TABLE `mnt_database` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`db_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据库管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='数据库管理';
 
 -- ----------------------------
 -- Records of mnt_database
@@ -121,7 +121,7 @@ CREATE TABLE `mnt_deploy` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`deploy_id`) USING BTREE,
   KEY `FK6sy157pseoxx4fmcqr1vnvvhy` (`app_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='部署管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='部署管理';
 
 -- ----------------------------
 -- Records of mnt_deploy
@@ -141,7 +141,7 @@ CREATE TABLE `mnt_deploy_history` (
   `ip` varchar(20) NOT NULL COMMENT '服务器IP',
   `deploy_id` bigint(20) DEFAULT NULL COMMENT '部署编号',
   PRIMARY KEY (`history_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='部署历史管理';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='部署历史管理';
 
 -- ----------------------------
 -- Records of mnt_deploy_history
@@ -158,7 +158,7 @@ CREATE TABLE `mnt_deploy_server` (
   `server_id` bigint(20) NOT NULL COMMENT '服务ID',
   PRIMARY KEY (`deploy_id`,`server_id`) USING BTREE,
   KEY `FKeaaha7jew9a02b3bk9ghols53` (`server_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='应用与服务器关联';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='应用与服务器关联';
 
 -- ----------------------------
 -- Records of mnt_deploy_server
@@ -183,7 +183,7 @@ CREATE TABLE `mnt_server` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`server_id`) USING BTREE,
   KEY `idx_ip` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='服务器管理';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='服务器管理';
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -203,7 +203,7 @@ CREATE TABLE `sys_dept` (
   PRIMARY KEY (`dept_id`) USING BTREE,
   KEY `inx_pid` (`pid`),
   KEY `inx_enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='部门';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -231,7 +231,7 @@ CREATE TABLE `sys_dict` (
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dict_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='数据字典';
 
 -- ----------------------------
 -- Records of sys_dict
@@ -258,7 +258,7 @@ CREATE TABLE `sys_dict_detail` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`detail_id`) USING BTREE,
   KEY `FK5tpkputc6d9nboxojdbgnpmyb` (`dict_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典详情';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='数据字典详情';
 
 -- ----------------------------
 -- Records of sys_dict_detail
@@ -278,7 +278,7 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job` (
   `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(150) NOT NULL COMMENT '岗位名称',
+  `name` varchar(255) NOT NULL COMMENT '岗位名称',
   `enabled` bit(1) NOT NULL COMMENT '岗位状态',
   `job_sort` int(5) DEFAULT NULL COMMENT '排序',
   `create_by` varchar(255) DEFAULT NULL COMMENT '创建者',
@@ -288,7 +288,7 @@ CREATE TABLE `sys_job` (
   PRIMARY KEY (`job_id`) USING BTREE,
   UNIQUE KEY `uniq_name` (`name`),
   KEY `inx_enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='岗位';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='岗位';
 
 -- ----------------------------
 -- Records of sys_job
@@ -320,7 +320,7 @@ CREATE TABLE `sys_log` (
   PRIMARY KEY (`log_id`) USING BTREE,
   KEY `log_create_time_index` (`create_time`),
   KEY `inx_log_type` (`log_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=3537 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=3537 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统日志';
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -331,8 +331,8 @@ CREATE TABLE `sys_menu` (
   `pid` bigint(20) DEFAULT NULL COMMENT '上级菜单ID',
   `sub_count` int(5) DEFAULT 0 COMMENT '子菜单数目',
   `type` int(11) DEFAULT NULL COMMENT '菜单类型',
-  `title` varchar(150) DEFAULT NULL COMMENT '菜单标题',
-  `name` varchar(150) DEFAULT NULL COMMENT '组件名称',
+  `title` varchar(255) DEFAULT NULL COMMENT '菜单标题',
+  `name` varchar(255) DEFAULT NULL COMMENT '组件名称',
   `component` varchar(255) DEFAULT NULL COMMENT '组件',
   `menu_sort` int(5) DEFAULT NULL COMMENT '排序',
   `icon` varchar(255) DEFAULT NULL COMMENT '图标',
@@ -349,7 +349,7 @@ CREATE TABLE `sys_menu` (
   UNIQUE KEY `uniq_title` (`title`),
   UNIQUE KEY `uniq_name` (`name`),
   KEY `inx_pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -369,9 +369,9 @@ INSERT INTO `sys_menu` VALUES (15, 10, 0, 1, '富文本', 'Editor', 'components/
 INSERT INTO `sys_menu` VALUES (18, 36, 3, 1, '存储管理', 'Storage', 'tools/storage/index', 34, 'qiniu', 'storage', b'0', b'0', b'0', 'storage:list', NULL, NULL, '2018-12-31 11:12:15', NULL);
 INSERT INTO `sys_menu` VALUES (19, 36, 0, 1, '支付宝工具', 'AliPay', 'tools/aliPay/index', 37, 'alipay', 'aliPay', b'0', b'0', b'0', NULL, NULL, NULL, '2018-12-31 14:52:38', NULL);
 INSERT INTO `sys_menu` VALUES (21, NULL, 2, 0, '多级菜单', NULL, '', 900, 'menu', 'nested', b'0', b'0', b'0', NULL, NULL, 'admin', '2019-01-04 16:22:03', '2020-06-21 17:27:35');
-INSERT INTO `sys_menu` VALUES (22, 21, 2, 1, '二级菜单1', NULL, 'nested/menu1/index', 999, 'menu', 'menu1', b'0', b'0', b'0', NULL, NULL, 'admin', '2019-01-04 16:23:29', '2020-06-21 17:27:20');
+INSERT INTO `sys_menu` VALUES (22, 21, 2, 0, '二级菜单1', NULL, '', 999, 'menu', 'menu1', b'0', b'0', b'0', NULL, NULL, 'admin', '2019-01-04 16:23:29', '2020-06-21 17:27:20');
 INSERT INTO `sys_menu` VALUES (23, 21, 0, 1, '二级菜单2', NULL, 'nested/menu2/index', 999, 'menu', 'menu2', b'0', b'0', b'0', NULL, NULL, NULL, '2019-01-04 16:23:57', NULL);
-INSERT INTO `sys_menu` VALUES (24, 22, 0, 1, '三级菜单1', NULL, 'nested/menu1/menu1-1', 999, 'menu', 'menu1-1', b'0', b'0', b'0', NULL, NULL, NULL, '2019-01-04 16:24:48', NULL);
+INSERT INTO `sys_menu` VALUES (24, 22, 0, 1, '三级菜单1', 'Test', 'nested/menu1/menu1-1', 999, 'menu', 'menu1-1', b'0', b'0', b'0', NULL, NULL, NULL, '2019-01-04 16:24:48', NULL);
 INSERT INTO `sys_menu` VALUES (27, 22, 0, 1, '三级菜单2', NULL, 'nested/menu1/menu1-2', 999, 'menu', 'menu1-2', b'0', b'0', b'0', NULL, NULL, NULL, '2019-01-07 17:27:32', NULL);
 INSERT INTO `sys_menu` VALUES (28, 1, 3, 1, '任务调度', 'Timing', 'system/timing/index', 999, 'timing', 'timing', b'0', b'0', b'0', 'timing:list', NULL, NULL, '2019-01-07 20:34:40', NULL);
 INSERT INTO `sys_menu` VALUES (30, 36, 0, 1, '代码生成', 'GeneratorIndex', 'generator/index', 32, 'dev', 'generator', b'0', b'1', b'0', NULL, NULL, NULL, '2019-01-11 15:45:55', NULL);
@@ -456,7 +456,7 @@ CREATE TABLE `sys_quartz_job` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`job_id`) USING BTREE,
   KEY `inx_is_pause` (`is_pause`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='定时任务';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='定时任务';
 
 -- ----------------------------
 -- Records of sys_quartz_job
@@ -484,7 +484,7 @@ CREATE TABLE `sys_quartz_log` (
   `params` varchar(255) DEFAULT NULL,
   `time` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='定时任务日志';
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='定时任务日志';
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -492,7 +492,7 @@ CREATE TABLE `sys_quartz_log` (
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(150) NOT NULL COMMENT '名称',
+  `name` varchar(255) NOT NULL COMMENT '名称',
   `level` int(255) DEFAULT NULL COMMENT '角色级别',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `data_scope` varchar(255) DEFAULT NULL COMMENT '数据权限',
@@ -503,14 +503,14 @@ CREATE TABLE `sys_role` (
   PRIMARY KEY (`role_id`) USING BTREE,
   UNIQUE KEY `uniq_name` (`name`),
   KEY `role_name_index` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES (1, '超级管理员', 1, '-', '自定义', NULL, 'admin', '2018-11-23 11:04:37', '2020-08-06 16:10:24');
-INSERT INTO `sys_role` VALUES (2, '普通用户', 2, '-', '自定义', NULL, 'admin', '2018-11-23 13:09:06', '2020-09-05 10:45:12');
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 1, '-', '全部', NULL, 'admin', '2018-11-23 11:04:37', '2020-08-06 16:10:24');
+INSERT INTO `sys_role` VALUES (2, '普通用户', 2, '-', '本级', NULL, 'admin', '2018-11-23 13:09:06', '2020-09-05 10:45:12');
 COMMIT;
 
 -- ----------------------------
@@ -522,16 +522,7 @@ CREATE TABLE `sys_roles_depts` (
   `dept_id` bigint(20) NOT NULL,
   PRIMARY KEY (`role_id`,`dept_id`) USING BTREE,
   KEY `FK7qg6itn5ajdoa9h9o78v9ksur` (`dept_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色部门关联';
-
--- ----------------------------
--- Records of sys_roles_depts
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_roles_depts` VALUES (1, 7);
-INSERT INTO `sys_roles_depts` VALUES (1, 8);
-INSERT INTO `sys_roles_depts` VALUES (2, 6);
-COMMIT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色部门关联';
 
 -- ----------------------------
 -- Table structure for sys_roles_menus
@@ -542,81 +533,113 @@ CREATE TABLE `sys_roles_menus` (
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`menu_id`,`role_id`) USING BTREE,
   KEY `FKcngg2qadojhi3a651a5adkvbq` (`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色菜单关联';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色菜单关联';
 
 -- ----------------------------
 -- Records of sys_roles_menus
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_roles_menus` VALUES (1, 1);
-INSERT INTO `sys_roles_menus` VALUES (1, 2);
 INSERT INTO `sys_roles_menus` VALUES (2, 1);
-INSERT INTO `sys_roles_menus` VALUES (2, 2);
 INSERT INTO `sys_roles_menus` VALUES (3, 1);
-INSERT INTO `sys_roles_menus` VALUES (3, 2);
 INSERT INTO `sys_roles_menus` VALUES (5, 1);
-INSERT INTO `sys_roles_menus` VALUES (5, 2);
 INSERT INTO `sys_roles_menus` VALUES (6, 1);
-INSERT INTO `sys_roles_menus` VALUES (6, 2);
 INSERT INTO `sys_roles_menus` VALUES (7, 1);
-INSERT INTO `sys_roles_menus` VALUES (7, 2);
 INSERT INTO `sys_roles_menus` VALUES (9, 1);
-INSERT INTO `sys_roles_menus` VALUES (9, 2);
 INSERT INTO `sys_roles_menus` VALUES (10, 1);
-INSERT INTO `sys_roles_menus` VALUES (10, 2);
 INSERT INTO `sys_roles_menus` VALUES (11, 1);
-INSERT INTO `sys_roles_menus` VALUES (11, 2);
 INSERT INTO `sys_roles_menus` VALUES (14, 1);
-INSERT INTO `sys_roles_menus` VALUES (14, 2);
 INSERT INTO `sys_roles_menus` VALUES (15, 1);
-INSERT INTO `sys_roles_menus` VALUES (15, 2);
 INSERT INTO `sys_roles_menus` VALUES (18, 1);
-INSERT INTO `sys_roles_menus` VALUES (18, 2);
 INSERT INTO `sys_roles_menus` VALUES (19, 1);
-INSERT INTO `sys_roles_menus` VALUES (19, 2);
 INSERT INTO `sys_roles_menus` VALUES (21, 1);
-INSERT INTO `sys_roles_menus` VALUES (21, 2);
 INSERT INTO `sys_roles_menus` VALUES (22, 1);
-INSERT INTO `sys_roles_menus` VALUES (22, 2);
 INSERT INTO `sys_roles_menus` VALUES (23, 1);
-INSERT INTO `sys_roles_menus` VALUES (23, 2);
 INSERT INTO `sys_roles_menus` VALUES (24, 1);
-INSERT INTO `sys_roles_menus` VALUES (24, 2);
 INSERT INTO `sys_roles_menus` VALUES (27, 1);
-INSERT INTO `sys_roles_menus` VALUES (27, 2);
 INSERT INTO `sys_roles_menus` VALUES (28, 1);
-INSERT INTO `sys_roles_menus` VALUES (28, 2);
 INSERT INTO `sys_roles_menus` VALUES (30, 1);
 INSERT INTO `sys_roles_menus` VALUES (32, 1);
 INSERT INTO `sys_roles_menus` VALUES (33, 1);
-INSERT INTO `sys_roles_menus` VALUES (33, 2);
 INSERT INTO `sys_roles_menus` VALUES (34, 1);
-INSERT INTO `sys_roles_menus` VALUES (34, 2);
 INSERT INTO `sys_roles_menus` VALUES (35, 1);
-INSERT INTO `sys_roles_menus` VALUES (35, 2);
 INSERT INTO `sys_roles_menus` VALUES (36, 1);
-INSERT INTO `sys_roles_menus` VALUES (36, 2);
 INSERT INTO `sys_roles_menus` VALUES (37, 1);
-INSERT INTO `sys_roles_menus` VALUES (37, 2);
 INSERT INTO `sys_roles_menus` VALUES (38, 1);
-INSERT INTO `sys_roles_menus` VALUES (38, 2);
 INSERT INTO `sys_roles_menus` VALUES (39, 1);
-INSERT INTO `sys_roles_menus` VALUES (39, 2);
 INSERT INTO `sys_roles_menus` VALUES (41, 1);
+INSERT INTO `sys_roles_menus` VALUES (44, 1);
+INSERT INTO `sys_roles_menus` VALUES (45, 1);
+INSERT INTO `sys_roles_menus` VALUES (46, 1);
+INSERT INTO `sys_roles_menus` VALUES (48, 1);
+INSERT INTO `sys_roles_menus` VALUES (49, 1);
+INSERT INTO `sys_roles_menus` VALUES (50, 1);
+INSERT INTO `sys_roles_menus` VALUES (52, 1);
+INSERT INTO `sys_roles_menus` VALUES (53, 1);
+INSERT INTO `sys_roles_menus` VALUES (54, 1);
+INSERT INTO `sys_roles_menus` VALUES (56, 1);
+INSERT INTO `sys_roles_menus` VALUES (57, 1);
+INSERT INTO `sys_roles_menus` VALUES (58, 1);
+INSERT INTO `sys_roles_menus` VALUES (60, 1);
+INSERT INTO `sys_roles_menus` VALUES (61, 1);
+INSERT INTO `sys_roles_menus` VALUES (62, 1);
+INSERT INTO `sys_roles_menus` VALUES (64, 1);
+INSERT INTO `sys_roles_menus` VALUES (65, 1);
+INSERT INTO `sys_roles_menus` VALUES (66, 1);
+INSERT INTO `sys_roles_menus` VALUES (73, 1);
+INSERT INTO `sys_roles_menus` VALUES (74, 1);
+INSERT INTO `sys_roles_menus` VALUES (75, 1);
+INSERT INTO `sys_roles_menus` VALUES (77, 1);
+INSERT INTO `sys_roles_menus` VALUES (78, 1);
+INSERT INTO `sys_roles_menus` VALUES (79, 1);
 INSERT INTO `sys_roles_menus` VALUES (80, 1);
-INSERT INTO `sys_roles_menus` VALUES (80, 2);
 INSERT INTO `sys_roles_menus` VALUES (82, 1);
 INSERT INTO `sys_roles_menus` VALUES (83, 1);
-INSERT INTO `sys_roles_menus` VALUES (83, 2);
 INSERT INTO `sys_roles_menus` VALUES (90, 1);
-INSERT INTO `sys_roles_menus` VALUES (90, 2);
 INSERT INTO `sys_roles_menus` VALUES (92, 1);
-INSERT INTO `sys_roles_menus` VALUES (92, 2);
 INSERT INTO `sys_roles_menus` VALUES (93, 1);
 INSERT INTO `sys_roles_menus` VALUES (94, 1);
 INSERT INTO `sys_roles_menus` VALUES (97, 1);
 INSERT INTO `sys_roles_menus` VALUES (98, 1);
+INSERT INTO `sys_roles_menus` VALUES (102, 1);
+INSERT INTO `sys_roles_menus` VALUES (103, 1);
+INSERT INTO `sys_roles_menus` VALUES (104, 1);
+INSERT INTO `sys_roles_menus` VALUES (105, 1);
+INSERT INTO `sys_roles_menus` VALUES (106, 1);
+INSERT INTO `sys_roles_menus` VALUES (107, 1);
+INSERT INTO `sys_roles_menus` VALUES (108, 1);
+INSERT INTO `sys_roles_menus` VALUES (109, 1);
+INSERT INTO `sys_roles_menus` VALUES (110, 1);
+INSERT INTO `sys_roles_menus` VALUES (111, 1);
+INSERT INTO `sys_roles_menus` VALUES (112, 1);
+INSERT INTO `sys_roles_menus` VALUES (113, 1);
+INSERT INTO `sys_roles_menus` VALUES (114, 1);
 INSERT INTO `sys_roles_menus` VALUES (116, 1);
+INSERT INTO `sys_roles_menus` VALUES (120, 1);
+INSERT INTO `sys_roles_menus` VALUES (1, 2);
+INSERT INTO `sys_roles_menus` VALUES (2, 2);
+INSERT INTO `sys_roles_menus` VALUES (6, 2);
+INSERT INTO `sys_roles_menus` VALUES (7, 2);
+INSERT INTO `sys_roles_menus` VALUES (9, 2);
+INSERT INTO `sys_roles_menus` VALUES (10, 2);
+INSERT INTO `sys_roles_menus` VALUES (11, 2);
+INSERT INTO `sys_roles_menus` VALUES (14, 2);
+INSERT INTO `sys_roles_menus` VALUES (15, 2);
+INSERT INTO `sys_roles_menus` VALUES (19, 2);
+INSERT INTO `sys_roles_menus` VALUES (21, 2);
+INSERT INTO `sys_roles_menus` VALUES (22, 2);
+INSERT INTO `sys_roles_menus` VALUES (23, 2);
+INSERT INTO `sys_roles_menus` VALUES (24, 2);
+INSERT INTO `sys_roles_menus` VALUES (27, 2);
+INSERT INTO `sys_roles_menus` VALUES (30, 2);
+INSERT INTO `sys_roles_menus` VALUES (32, 2);
+INSERT INTO `sys_roles_menus` VALUES (33, 2);
+INSERT INTO `sys_roles_menus` VALUES (34, 2);
+INSERT INTO `sys_roles_menus` VALUES (36, 2);
+INSERT INTO `sys_roles_menus` VALUES (80, 2);
+INSERT INTO `sys_roles_menus` VALUES (82, 2);
+INSERT INTO `sys_roles_menus` VALUES (83, 2);
+INSERT INTO `sys_roles_menus` VALUES (116, 2);
 COMMIT;
 
 -- ----------------------------
@@ -626,18 +649,18 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `dept_id` bigint(20) DEFAULT NULL COMMENT '部门名称',
-  `username` varchar(150) DEFAULT NULL COMMENT '用户名',
+  `username` varchar(255) DEFAULT NULL COMMENT '用户名',
   `nick_name` varchar(255) DEFAULT NULL COMMENT '昵称',
   `gender` varchar(2) DEFAULT NULL COMMENT '性别',
   `phone` varchar(255) DEFAULT NULL COMMENT '手机号码',
-  `email` varchar(150) DEFAULT NULL COMMENT '邮箱',
+  `email` varchar(255) DEFAULT NULL COMMENT '邮箱',
   `avatar_name` varchar(255) DEFAULT NULL COMMENT '头像地址',
   `avatar_path` varchar(255) DEFAULT NULL COMMENT '头像真实路径',
   `password` varchar(255) DEFAULT NULL COMMENT '密码',
   `is_admin` bit(1) DEFAULT b'0' COMMENT '是否为admin账号',
   `enabled` bigint(20) DEFAULT NULL COMMENT '状态：1启用、0禁用',
   `create_by` varchar(255) DEFAULT NULL COMMENT '创建者',
-  `update_by` varchar(255) DEFAULT NULL COMMENT '更新着',
+  `update_by` varchar(255) DEFAULT NULL COMMENT '更新者',
   `pwd_reset_time` datetime DEFAULT NULL COMMENT '修改密码的时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -649,14 +672,14 @@ CREATE TABLE `sys_user` (
   KEY `FK5rwmryny6jthaaxkogownknqp` (`dept_id`) USING BTREE,
   KEY `FKpq2dhypk2qgt68nauh2by22jb` (`avatar_name`) USING BTREE,
   KEY `inx_enabled` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统用户';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_user` VALUES (1, 2, 'admin', '管理员', '男', '18888888888', '201507802@qq.com', 'avatar-20200806032259161.png', '/Users/jie/Documents/work/me/admin/eladmin/~/avatar/avatar-20200806032259161.png', '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', 1, NULL, 'admin', '2020-05-03 16:38:31', '2018-08-23 09:11:56', '2020-09-05 10:43:31');
-INSERT INTO `sys_user` VALUES (2, 2, 'test', '测试', '男', '18888888888', '231@qq.com', NULL, NULL, '$2a$10$4XcyudOYTSz6fue6KFNMHeUQnCX5jbBQypLEnGk1PmekXt5c95JcK', b'0', 1, 'admin', 'admin', NULL, '2020-05-05 11:15:49', '2020-09-05 10:43:38');
+INSERT INTO `sys_user` VALUES (2, 2, 'test', '测试', '男', '19999999999', '231@qq.com', NULL, NULL, '$2a$10$4XcyudOYTSz6fue6KFNMHeUQnCX5jbBQypLEnGk1PmekXt5c95JcK', b'0', 1, 'admin', 'admin', NULL, '2020-05-05 11:15:49', '2020-09-05 10:43:38');
 COMMIT;
 
 -- ----------------------------
@@ -667,7 +690,7 @@ CREATE TABLE `sys_users_jobs` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `job_id` bigint(20) NOT NULL COMMENT '岗位ID',
   PRIMARY KEY (`user_id`,`job_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_users_jobs
@@ -686,7 +709,7 @@ CREATE TABLE `sys_users_roles` (
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`user_id`,`role_id`) USING BTREE,
   KEY `FKq4eq273l04bpu4efj0jd0jb98` (`role_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户角色关联';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户角色关联';
 
 -- ----------------------------
 -- Records of sys_users_roles
@@ -713,7 +736,7 @@ CREATE TABLE `tool_alipay_config` (
   `sign_type` varchar(255) DEFAULT NULL COMMENT '签名方式',
   `sys_service_provider_id` varchar(255) DEFAULT NULL COMMENT '商户号',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='支付宝配置类';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='支付宝配置类';
 
 -- ----------------------------
 -- Records of tool_alipay_config
@@ -734,7 +757,7 @@ CREATE TABLE `tool_email_config` (
   `port` varchar(255) DEFAULT NULL COMMENT '端口',
   `user` varchar(255) DEFAULT NULL COMMENT '发件者用户名',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='邮箱配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='邮箱配置';
 
 -- ----------------------------
 -- Table structure for tool_local_storage
@@ -753,7 +776,7 @@ CREATE TABLE `tool_local_storage` (
   `create_time` datetime DEFAULT NULL COMMENT '创建日期',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`storage_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='本地存储';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='本地存储';
 
 -- ----------------------------
 -- Records of tool_local_storage
@@ -774,7 +797,7 @@ CREATE TABLE `tool_qiniu_config` (
   `type` varchar(255) DEFAULT NULL COMMENT '空间类型',
   `zone` varchar(255) DEFAULT NULL COMMENT '机房',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='七牛云配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='七牛云配置';
 
 -- ----------------------------
 -- Table structure for tool_qiniu_content
@@ -783,7 +806,7 @@ DROP TABLE IF EXISTS `tool_qiniu_content`;
 CREATE TABLE `tool_qiniu_content` (
   `content_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `bucket` varchar(255) DEFAULT NULL COMMENT 'Bucket 识别符',
-  `name` varchar(150) DEFAULT NULL COMMENT '文件名称',
+  `name` varchar(255) DEFAULT NULL COMMENT '文件名称',
   `size` varchar(255) DEFAULT NULL COMMENT '文件大小',
   `type` varchar(255) DEFAULT NULL COMMENT '文件类型：私有或公开',
   `url` varchar(255) DEFAULT NULL COMMENT '文件url',
@@ -791,7 +814,7 @@ CREATE TABLE `tool_qiniu_content` (
   `update_time` datetime DEFAULT NULL COMMENT '上传或同步的时间',
   PRIMARY KEY (`content_id`) USING BTREE,
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='七牛云文件存储';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='七牛云文件存储';
 
 -- ----------------------------
 -- Records of tool_qiniu_content

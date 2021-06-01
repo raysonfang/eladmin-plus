@@ -53,7 +53,6 @@ public class LocalStorageController {
         return new ResponseEntity<>(localStorageService.queryAll(criteria,pageable),HttpStatus.OK);
     }
 
-    @Log("导出数据")
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('storage:list')")
@@ -69,7 +68,6 @@ public class LocalStorageController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Log("上传图片")
     @PostMapping("/pictures")
     @ApiOperation("上传图片")
     public ResponseEntity<Object> upload(@RequestParam MultipartFile file){
@@ -81,7 +79,8 @@ public class LocalStorageController {
         LocalStorage localStorage = localStorageService.create(null, file);
         return new ResponseEntity<>(localStorage, HttpStatus.OK);
     }
-
+    
+    @Log("修改文件")
     @ApiOperation("修改文件")
     @PutMapping
     @PreAuthorize("@el.check('storage:edit')")
@@ -90,7 +89,7 @@ public class LocalStorageController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Log("多选删除")
+    @Log("删除文件")
     @DeleteMapping
     @ApiOperation("多选删除")
     public ResponseEntity<Object> delete(@RequestBody Long[] ids) {

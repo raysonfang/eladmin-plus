@@ -1,11 +1,9 @@
 package me.zhengjie.modules.system.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.QueryHelpMybatisPlus;
@@ -13,6 +11,7 @@ import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.modules.system.domain.Menu;
+import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.service.MenuService;
 import me.zhengjie.modules.system.service.RoleService;
@@ -24,11 +23,14 @@ import me.zhengjie.modules.system.domain.vo.MenuVo;
 import me.zhengjie.modules.system.service.dto.RoleSmallDto;
 import me.zhengjie.modules.system.service.mapper.MenuMapper;
 import me.zhengjie.modules.system.service.mapper.UserMapper;
+import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.FileUtil;
 import me.zhengjie.utils.RedisUtils;
+import me.zhengjie.utils.StringUtils;
 import me.zhengjie.utils.ValidationUtil;
 import me.zhengjie.utils.enums.MenuType;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -67,7 +69,7 @@ public class MenuServiceImpl extends CommonServiceImpl<Menu> implements MenuServ
         if (isQuery) {
             query.setPidIsNull(true);
         }
-        boolean notEmpty = null != query.getPid() || StrUtil.isNotEmpty(query.getBlurry())
+        boolean notEmpty = null != query.getPid() || StringUtils.isNotEmpty(query.getBlurry())
                 || CollectionUtils.isNotEmpty(query.getCreateTime());
         if (isQuery && notEmpty) {
             query.setPidIsNull(null);
@@ -210,7 +212,19 @@ public class MenuServiceImpl extends CommonServiceImpl<Menu> implements MenuServ
         delCaches(resources.getId(), pid);
         return ret > 0;
     }
-
+    
+    @Override
+    public Set<Menu> getChildMenus(List<Menu> menuList, Set<Menu> menuSet) {
+        for (Menu menu : menuList) {
+            menuSet.add(menu);
+            List<Menu> menus = (List<Menu>) menuMapper.selectById(menu.getId());
+            if(menus!=null && menus.size()!=0){
+                getChildMenus(menus, menuSet);
+            }
+        }
+        return menuSet;
+    }
+    
     @Override
     public Set<Menu> getDeleteMenus(List<Menu> menuList, Set<Menu> menuSet) {
         // 递归找出待删除的菜单
@@ -341,13 +355,16 @@ public class MenuServiceImpl extends CommonServiceImpl<Menu> implements MenuServ
                 if (!menuDTO.getIFrame()) {
                     if (menuDTO.getPid() == null) {
                         menuVo.setComponent(
-                                StrUtil.isEmpty(menuDTO.getComponent()) ? "Layout" : menuDTO.getComponent());
-                    } else if (!StrUtil.isEmpty(menuDTO.getComponent())) {
+                                StringUtils.isEmpty(menuDTO.getComponent()) ? "Layout" : menuDTO.getComponent());
+                    // 如果不是一级菜单，并且菜单类型为目录，则代表是多级菜单
+                    }else if(menuDTO.getType() == 0){
+                        menuVo.setComponent(StringUtils.isEmpty(menuDTO.getComponent()) ? "ParentView" : menuDTO.getComponent());
+                    } else if (!StringUtils.isEmpty(menuDTO.getComponent())) {
                         menuVo.setComponent(menuDTO.getComponent());
                     }
                 }
                 menuVo.setMeta(new MenuMetaVo(menuDTO.getTitle(), menuDTO.getIcon(), !menuDTO.getCache()));
-                if (menuDtoList != null && menuDtoList.size() != 0) {
+                if (CollectionUtil.isNotEmpty(menuDtoList)) {
                     menuVo.setAlwaysShow(true);
                     menuVo.setRedirect("noredirect");
                     menuVo.setChildren(buildMenus(menuDtoList));
@@ -396,9 +413,9 @@ public class MenuServiceImpl extends CommonServiceImpl<Menu> implements MenuServ
      */
     public void delCaches(Long id, Long pid) {
         List<User> users = userMapper.findByMenuId(id);
-        redisUtils.del("menu::id:" + id);
-        redisUtils.delByKeys("menu::user:", users.stream().map(User::getId).collect(Collectors.toSet()));
-        redisUtils.del("menu::pid:" + (pid == null ? 0 : pid));
+        redisUtils.del(CacheKey.MENU_ID + id);
+        redisUtils.delByKeys(CacheKey.MENU_USER, users.stream().map(User::getId).collect(Collectors.toSet()));
+        redisUtils.del(CacheKey.MENU_PID + (pid == null ? 0 : pid));
     }
     
     @Override

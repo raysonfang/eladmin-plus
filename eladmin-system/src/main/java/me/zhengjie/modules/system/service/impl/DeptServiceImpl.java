@@ -21,6 +21,7 @@ import me.zhengjie.modules.system.service.dto.DeptQueryParam;
 import me.zhengjie.modules.system.service.mapper.DeptMapper;
 import me.zhengjie.modules.system.service.mapper.RoleMapper;
 import me.zhengjie.modules.system.service.mapper.UserMapper;
+import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.FileUtil;
 import me.zhengjie.utils.RedisUtils;
@@ -146,8 +147,10 @@ public class DeptServiceImpl extends CommonServiceImpl<Dept> implements DeptServ
         int ret = deptMapper.insert(resources);
         resources.setSubCount(0);
         if (resources.getPid() != null) {
-            redisUtils.del("dept::pid:" + resources.getPid());
+            redisUtils.del(CacheKey.DEPT_PID + resources.getPid());
             updateSubCnt(resources.getPid());
+            // 清理缓存
+            delCaches(resources.getId(), null, resources.getPid());
         }
         return ret > 0;
     }
@@ -206,6 +209,7 @@ public class DeptServiceImpl extends CommonServiceImpl<Dept> implements DeptServ
     }
 
     // @Cacheable(key = "'pid:' + #p0")
+    @Override
     public List<Dept> findByPid(long pid) {
         QueryWrapper<Dept> query = new QueryWrapper<>();
         query.lambda().eq(Dept::getPid, pid);
@@ -338,12 +342,12 @@ public class DeptServiceImpl extends CommonServiceImpl<Dept> implements DeptServ
      * @param id /
      */
     public void delCaches(Long id, Long pidOld, Long pidNew) {
-        List<User> users = userMapper.findByDeptRoleId(id);
+        List<User> users = userMapper.findByRoleDeptId(id);
         // 删除数据权限
-        redisUtils.delByKeys("data::user:", users.stream().map(User::getId).collect(Collectors.toSet()));
-        redisUtils.del("dept::id:" + id);
-        redisUtils.del("dept::pid:" + (pidOld == null ? 0 : pidOld));
-        redisUtils.del("dept::pid:" + (pidNew == null ? 0 : pidNew));
+        redisUtils.delByKeys(CacheKey.DATA_USER, users.stream().map(User::getId).collect(Collectors.toSet()));
+        redisUtils.del(CacheKey.DEPT_ID + id);
+        redisUtils.del(CacheKey.DEPT_PID + (pidOld == null ? 0 : pidOld));
+        redisUtils.del(CacheKey.DEPT_PID + (pidNew == null ? 0 : pidNew));
     }
 
 }

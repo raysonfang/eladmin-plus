@@ -15,31 +15,33 @@
  */
 package me.zhengjie.utils;
 
-import cn.hutool.core.util.ObjectUtil;
-import me.zhengjie.exception.BadRequestException;
-import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
+import java.io.Closeable;
 
 /**
- * 验证工具
  * @author Zheng Jie
- * @date 2018-11-23
- */
-public class ValidationUtil{
+ * @website https://el-admin.vip
+ * @description 用于关闭各种连接，缺啥补啥
+ * @date 2021-03-05
+ **/
+public class CloseUtil {
 
-    /**
-     * 验证空
-     */
-    public static void isNull(Object obj, String entity, String parameter , Object value){
-        if(ObjectUtil.isNull(obj)){
-            String msg = entity + " 不存在: "+ parameter +" is "+ value;
-            throw new BadRequestException(msg);
+    public static void close(Closeable closeable) {
+        if (null != closeable) {
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                // 静默关闭
+            }
         }
     }
 
-    /**
-     * 验证是否为邮箱
-     */
-    public static boolean isEmail(String email) {
-        return new EmailValidator().isValid(email, null);
+    public static void close(AutoCloseable closeable) {
+        if (null != closeable) {
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                // 静默关闭
+            }
+        }
     }
 }

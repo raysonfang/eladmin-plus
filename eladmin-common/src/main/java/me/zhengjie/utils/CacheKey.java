@@ -21,29 +21,21 @@ package me.zhengjie.utils;
  * @apiNote: 关于缓存的Key集合
  */
 public interface CacheKey {
-
-    /**
-     * 内置 用户、岗位、应用、菜单、角色 相关key
-     */
-    String USER_MODIFY_TIME_KEY = "user:modify:time:key:";
-    String APP_MODIFY_TIME_KEY = "app:modify:time:key:";
-    String JOB_MODIFY_TIME_KEY = "job:modify:time:key:";
-    String MENU_MODIFY_TIME_KEY = "menu:modify:time:key:";
-    String ROLE_MODIFY_TIME_KEY = "role:modify:time:key:";
-    String DEPT_MODIFY_TIME_KEY = "dept:modify:time:key:";
-
+    
     /**
      * 用户
      */
     String USER_ID = "user::id:";
-    String USER_NAME = "user::username:";
+    
     /**
      * 数据
      */
-    String DATE_USER = "data::user:";
+    String DATA_USER = "data::user:";
     /**
      * 菜单
      */
+    String MENU_ID = "menu::id:";
+    String MENU_PID = "menu::pid:";
     String MENU_USER = "menu::user:";
     /**
      * 角色授权
@@ -53,4 +45,24 @@ public interface CacheKey {
      * 角色信息
      */
     String ROLE_ID = "role::id:";
+    
+    /**
+     * 部门
+     */
+    String DEPT_ID = "dept::id:";
+    String DEPT_PID = "dept::pid:";
+    /**
+     * 岗位
+     */
+    String JOB_ID = "job::id:";
+    /**
+     * 数据字典
+     */
+    String DICT_NAME = "dict::name:";
+    String DICTDEAIL_DICTID = "dictDetail::dictId:";
+    String DICT_ID = "dict::id:";
+    String DICTDEAIL_DICTNAME = "dictDetail::name:";
+    
+    
+    
 }

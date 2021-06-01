@@ -48,7 +48,6 @@ public class OnlineController {
         return new ResponseEntity<>(onlineUserService.getAll(filter, pageable),HttpStatus.OK);
     }
 
-    @Log("导出数据")
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check()")

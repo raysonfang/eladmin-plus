@@ -110,6 +110,11 @@ public class QueryHelpMybatisPlus {
                                queryWrapper.in(finalAttributeName, (Collection<Long>) val);
                             }
                             break;
+                        case NOT_IN:
+                            if (CollUtil.isNotEmpty((Collection<Long>) val)) {
+                                queryWrapper.notIn(finalAttributeName, (Collection<Long>) val);
+                            }
+                            break;
                         case NOT_EQUAL:
                            queryWrapper.ne(finalAttributeName, val);
                             break;

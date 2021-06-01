@@ -214,6 +214,9 @@ public class RoleServiceImpl extends CommonServiceImpl<Role> implements RoleServ
 
     @Override
     public Integer findByRoles(Set<Long> roleIds) {
+        if (roleIds.size() == 0) {
+            return Integer.MAX_VALUE;
+        }
         Set<RoleDto> roleDtos = new HashSet<>();
         for (Long id : roleIds) {
             roleDtos.add(findById(id));

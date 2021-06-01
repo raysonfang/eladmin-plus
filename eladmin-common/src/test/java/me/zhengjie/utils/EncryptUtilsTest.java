@@ -1,8 +1,8 @@
 package me.zhengjie.utils;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 import static me.zhengjie.utils.EncryptUtils.*;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 public class EncryptUtilsTest {
 

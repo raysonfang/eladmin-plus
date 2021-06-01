@@ -50,7 +50,16 @@ public interface MenuService  extends CommonService<Menu>{
      * @return /
      */
     Set<Menu> getDeleteMenus(List<Menu> menuList, Set<Menu> menuSet);
-
+    
+    /**
+     * 获取所有子节点，包含自身ID
+     * @param menuList /
+     * @param menuSet /
+     * @return /
+     */
+    Set<Menu> getChildMenus(List<Menu> menuList, Set<Menu> menuSet);
+    
+    
     /**
      * 构建菜单树
      * @param menuDtos 原始数据

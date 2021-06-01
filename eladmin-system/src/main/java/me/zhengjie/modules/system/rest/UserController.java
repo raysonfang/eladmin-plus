@@ -66,7 +66,6 @@ public class UserController {
     private final RoleService roleService;
     private final VerifyService verificationCodeService;
 
-    @Log("导出用户数据")
     @ApiOperation("导出用户数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('user:list')")
@@ -74,7 +73,6 @@ public class UserController {
         userService.download(userService.queryAll(criteria), response);
     }
 
-    @Log("查询用户")
     @ApiOperation("查询用户")
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
@@ -117,7 +115,7 @@ public class UserController {
     @ApiOperation("修改用户")
     @PutMapping
     @PreAuthorize("@el.check('user:edit')")
-    public ResponseEntity<Object> update(@Validated(User.Update.class) @RequestBody UserDto resources){
+    public ResponseEntity<Object> update(@Validated(User.Update.class) @RequestBody UserDto resources) throws Exception {
         checkLevel(resources);
         userService.updateById(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

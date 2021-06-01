@@ -1,8 +1,6 @@
 package me.zhengjie.modules.system.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 import me.zhengjie.base.CommonDto;
@@ -44,11 +42,11 @@ public class UserDto extends CommonDto implements Serializable {
     private String avatarName;
 
     private String avatarPath;
-
-    @JsonIgnore
+    
+    @JSONField(serialize = false)
     private String password;
-
-    @JsonIgnore
+    
+    @JSONField(serialize = false)
     private Boolean isAdmin;
 
     private Boolean enabled;

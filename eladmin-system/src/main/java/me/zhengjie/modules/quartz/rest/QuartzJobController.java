@@ -49,7 +49,6 @@ public class QuartzJobController {
     private static final String ENTITY_NAME = "quartzJob";
     private final QuartzJobService quartzJobService;
 
-    @Log("查询定时任务")
     @ApiOperation("查询定时任务")
     @GetMapping
     @PreAuthorize("@el.check('timing:list')")
@@ -57,7 +56,6 @@ public class QuartzJobController {
         return new ResponseEntity<>(quartzJobService.queryAll(criteria,pageable), HttpStatus.OK);
     }
 
-    @Log("导出任务数据")
     @ApiOperation("导出任务数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('timing:list')")
@@ -65,7 +63,6 @@ public class QuartzJobController {
         quartzJobService.download(quartzJobService.queryAll(criteria), response);
     }
 
-    @Log("导出日志数据")
     @ApiOperation("导出日志数据")
     @GetMapping(value = "/logs/download")
     @PreAuthorize("@el.check('timing:list')")

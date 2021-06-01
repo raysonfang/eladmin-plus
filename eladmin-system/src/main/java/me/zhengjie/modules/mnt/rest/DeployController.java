@@ -55,7 +55,6 @@ public class DeployController {
     private final DeployService deployService;
 
 
-	@Log("导出部署数据")
 	@ApiOperation("导出部署数据")
 	@GetMapping(value = "/download")
 	@PreAuthorize("@el.check('database:list')")
@@ -63,7 +62,6 @@ public class DeployController {
 		deployService.download(deployService.queryAll(criteria), response);
 	}
 
-	@Log("查询部署")
     @ApiOperation(value = "查询部署")
     @GetMapping
 	@PreAuthorize("@el.check('deploy:list')")

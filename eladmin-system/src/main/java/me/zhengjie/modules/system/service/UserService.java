@@ -49,7 +49,7 @@ public interface UserService  extends CommonService<User>{
      * 插入一条新数据。
      */
     boolean save(UserDto resources);
-    boolean updateById(UserDto resources);
+    boolean updateById(UserDto resources) throws Exception;
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);
 

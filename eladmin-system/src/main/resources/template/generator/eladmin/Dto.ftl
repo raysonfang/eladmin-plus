@@ -14,8 +14,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.sql.Timestamp;
 <#if !auto && pkColumnType == 'Long'>
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 </#if>
 
 /**
@@ -34,7 +34,7 @@ public class ${className}Dto implements Serializable {
     <#if column.columnKey = 'PRI'>
     <#if !auto && pkColumnType = 'Long'>
     /** 防止精度丢失 */
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JSONField(serializeUsing = ToStringSerializer.class)
     </#if>
     </#if>
     <#if column.changeColumnName != 'delFlag'>

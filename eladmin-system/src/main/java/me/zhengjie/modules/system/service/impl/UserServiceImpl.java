@@ -142,7 +142,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
     }
 
     @Override
-    @Cacheable(key = "'username:' + #p0")
     public UserDto findByName(String userName) {
         UserDto dto = ConvertUtil.convert(getByUsername(userName), UserDto.class);
         dto.setDept(new DeptSmallDto(dto.getDeptId(), ""));
@@ -203,7 +202,7 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateById(UserDto resources){
+    public boolean updateById(UserDto resources) throws Exception {
         User user = getById(resources.getId());
         User user1 = getByUsername(user.getUsername());
         User user2 = getByEmail(user.getEmail());
@@ -221,7 +220,7 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
         //usersRolesService.getUsersRoleList(resources.getId());
         // 如果用户的角色改变
         //if (!resources.getRoles().equals(xxxx.getRoles())) {
-            redisUtils.del(CacheKey.DATE_USER + resources.getId());
+            redisUtils.del(CacheKey.DATA_USER + resources.getId());
             redisUtils.del(CacheKey.MENU_USER + resources.getId());
             redisUtils.del(CacheKey.ROLE_AUTH + resources.getId());
         //}
@@ -279,7 +278,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
         user.setPassword(encryptPassword);
         user.setPwdResetTime(new Date());
         userMapper.update(user, updater);
-        redisUtils.del("user::username:" + username);
         flushCache(username);
     }
 
@@ -294,7 +292,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
         if (StrUtil.isNotBlank(oldPath)) {
             FileUtil.del(oldPath);
         }
-        redisUtils.del("user::username:" + user.getUsername());
         return new HashMap<String, String>() {
             {
                 put("avatar", file.getName());
@@ -314,7 +311,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
         User userUpdate = new User();
         userUpdate.setEmail(email);
         userMapper.update(userUpdate, updater);
-        redisUtils.del("user::username:" + username);
     }
 
     @Override
@@ -386,7 +382,6 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
      */
     public void delCaches(Long id, String username) {
         redisUtils.del(CacheKey.USER_ID + id);
-        redisUtils.del(CacheKey.USER_NAME + username);
         flushCache(username);
     }
 
