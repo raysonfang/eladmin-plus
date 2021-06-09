@@ -144,7 +144,7 @@ public class UserServiceImpl extends CommonServiceImpl<User> implements UserServ
     @Override
     public UserDto findByName(String userName) {
         UserDto dto = ConvertUtil.convert(getByUsername(userName), UserDto.class);
-        dto.setDept(new DeptSmallDto(dto.getDeptId(), ""));
+        dto.setDept(new DeptSmallDto(dto.getDeptId(), deptService.findById(dto.getDeptId()).getName()));
         //dto.setRoles();
         //dto.setJobs();
         return dto;
