@@ -298,7 +298,7 @@ public class DeptServiceImpl extends CommonServiceImpl<Dept> implements DeptServ
                 QueryWrapper<Dept> query = new QueryWrapper<Dept>();
                 query.lambda().eq(Dept::getPid, dept.getId());
                 List<Dept> depts = deptMapper.selectList(query);
-                if (deptList.size() != 0) {
+                if (depts.size() != 0) {
                     list.addAll(getDeptChildren(dept.getId(), depts));
                 }
                 list.add(dept.getId());
