@@ -2,6 +2,7 @@ package me.zhengjie.modules.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -217,8 +218,10 @@ public class MenuServiceImpl extends CommonServiceImpl<Menu> implements MenuServ
     public Set<Menu> getChildMenus(List<Menu> menuList, Set<Menu> menuSet) {
         for (Menu menu : menuList) {
             menuSet.add(menu);
-            List<Menu> menus = (List<Menu>) menuMapper.selectById(menu.getId());
-            if(menus!=null && menus.size()!=0){
+            LambdaQueryWrapper<Menu> menuLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            menuLambdaQueryWrapper.eq(Menu::getPid, menu.getId());
+            List<Menu> menus = menuMapper.selectList(menuLambdaQueryWrapper);
+            if(CollectionUtil.isNotEmpty(menus)){
                 getChildMenus(menus, menuSet);
             }
         }
