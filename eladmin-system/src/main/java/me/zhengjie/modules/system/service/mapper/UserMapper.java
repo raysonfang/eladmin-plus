@@ -94,6 +94,6 @@ public interface UserMapper extends CommonMapper<User> {
      * @return /
      */
     @Select("SELECT u.user_id as id, u.* FROM sys_user u, sys_users_roles r, sys_roles_depts d WHERE "
-            + "u.user_id = r.user_id AND r.role_id = d.role_id AND r.dept_id = #{deptId} group by u.user_id")
+            + "u.user_id = r.user_id AND r.role_id = d.role_id AND u.dept_id = #{deptId} group by u.user_id")
     List<User> findByRoleDeptId(@Param("deptId")Long deptId);
 }
