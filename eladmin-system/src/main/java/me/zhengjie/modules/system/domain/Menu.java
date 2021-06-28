@@ -58,6 +58,7 @@ public class Menu extends CommonEntity implements Serializable {
     private Boolean iFrame;
 
     @ApiModelProperty(value = "缓存")
+    @TableField(value = "`cache`")
     private Boolean cache;
 
     @ApiModelProperty(value = "隐藏")
