@@ -1,5 +1,6 @@
 package me.zhengjie.modules.system.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -27,6 +28,7 @@ public class Menu extends CommonEntity implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "上级菜单ID")
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private Long pid;
 
     @ApiModelProperty(value = "子菜单数目")
