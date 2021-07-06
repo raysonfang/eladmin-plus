@@ -10,6 +10,7 @@ import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityExistException;
+import me.zhengjie.modules.security.service.UserCacheClean;
 import me.zhengjie.modules.system.domain.*;
 import me.zhengjie.modules.system.service.mapper.*;
 import me.zhengjie.modules.system.service.*;
@@ -59,6 +60,8 @@ public class RoleServiceImpl extends CommonServiceImpl<Role> implements RoleServ
     private final RolesMenusMapper rolesMenusMapper;
 
     private final RedisUtils redisUtils;
+    
+    private final UserCacheClean userCacheClean;
 
     @Override
     public PageInfo<RoleDto> queryAll(RoleQueryParam query, Pageable pageable) {
@@ -182,6 +185,7 @@ public class RoleServiceImpl extends CommonServiceImpl<Role> implements RoleServ
             rm.setRoleId(resources.getId());
             rolesMenusMapper.insert(rm);
         });
+        userCacheClean.cleanAll();
     }
 
     @Override
