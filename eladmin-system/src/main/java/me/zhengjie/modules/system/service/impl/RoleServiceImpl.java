@@ -159,13 +159,13 @@ public class RoleServiceImpl extends CommonServiceImpl<Role> implements RoleServ
     }
 
     @Override
+    @CacheEvict(key = "'auth:' + #p0.id")
     public void updateMenu(RoleDto resources) {
         // 清理缓存
         List<User> users = userMapper.findByRoleId(resources.getId());
         Set<Long> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
         redisUtils.delByKeys("menu::user:", userIds);
         redisUtils.del("role::id:" + resources.getId());
-
         //this.saveOrUpdate(resources);
         QueryWrapper<RolesMenus> query = new QueryWrapper<RolesMenus>();
         query.lambda().eq(RolesMenus::getRoleId, resources.getId());
