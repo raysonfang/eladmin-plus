@@ -15,7 +15,7 @@
  */
 package me.zhengjie.modules.system.service.impl;
 
-import cn.hutool.core.date.BetweenFormater;
+import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
 import me.zhengjie.modules.system.service.MonitorService;
 import me.zhengjie.utils.FileUtil;
@@ -166,7 +166,7 @@ public class MonitorServiceImpl implements MonitorService {
         long time = ManagementFactory.getRuntimeMXBean().getStartTime();
         Date date = new Date(time);
         // 计算项目运行时间
-        String formatBetween = DateUtil.formatBetween(date, new Date(),BetweenFormater.Level.HOUR);
+        String formatBetween = DateUtil.formatBetween(date, new Date(), BetweenFormatter.Level.HOUR);
         // 系统信息
         systemInfo.put("os", os.toString());
         systemInfo.put("day", formatBetween);
