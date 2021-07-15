@@ -1,9 +1,11 @@
 server:
-  port: 8000
+  port: 8001
 
 spring:
   freemarker:
     check-template-location: false
+  cache:
+    type: redis
   profiles:
     active: dev
   jackson:
