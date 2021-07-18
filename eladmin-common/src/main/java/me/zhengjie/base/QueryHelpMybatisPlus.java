@@ -157,17 +157,7 @@ public class QueryHelpMybatisPlus {
      */
 
     public static String humpToUnderline(String para) {
-        StringBuilder sb = new StringBuilder(para);
-        int temp = 0;
-        if (!para.contains("_")) {
-            for (int i = 0; i < para.length(); i++) {
-                if (Character.isUpperCase(para.charAt(i))) {
-                    sb.insert(i + temp, "_");
-                    temp += 1;
-                }
-            }
-        }
-        return sb.toString();
+        return StrUtil.toUnderlineCase(para);
     }
 
 //    public static void main(String[] args) {
