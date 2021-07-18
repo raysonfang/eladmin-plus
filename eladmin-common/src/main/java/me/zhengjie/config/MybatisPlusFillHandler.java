@@ -19,24 +19,39 @@ public class MybatisPlusFillHandler implements MetaObjectHandler{
     public void insertFill(MetaObject metaObject) {
         Date currentTime = new Date();
         if (metaObject.hasSetter("createTime")) {
-            setFieldValByName("createTime", currentTime, metaObject);
+            Class<?> clazz = metaObject.getSetterType("createTime");
+            if(Long.class.getName().equals(clazz.getName())) {
+                setFieldValByName("createTime", currentTime.getTime(), metaObject);
+            } else {
+                setFieldValByName("createTime", currentTime, metaObject);
+            }
         }
         if (metaObject.hasSetter("createBy")) {
             setFieldValByName("createBy", getUsername(), metaObject);
         }
         if (metaObject.hasSetter("updateTime")) {
-            setFieldValByName("updateTime", currentTime, metaObject);
+            Class<?> clazz = metaObject.getSetterType("updateTime");
+            if(Long.class.getName().equals(clazz.getName())) {
+                setFieldValByName("updateTime", currentTime.getTime(), metaObject);
+            }else {
+                setFieldValByName("updateTime", currentTime, metaObject);
+            }
         }
         if (metaObject.hasSetter("updateBy")) {
             setFieldValByName("updateBy", getUsername(), metaObject);
         }
     }
-
+    
     @Override
     public void updateFill(MetaObject metaObject) {
         Date currentTime = new Date();
         if (metaObject.hasSetter("updateTime")) {
-            setFieldValByName("updateTime", currentTime, metaObject);
+            Class<?> clazz = metaObject.getSetterType("updateTime");
+            if(Long.class.getName().equals(clazz.getName())) {
+                setFieldValByName("updateTime", currentTime.getTime(), metaObject);
+            }else {
+                setFieldValByName("updateTime", currentTime, metaObject);
+            }
         }
         if (metaObject.hasSetter("updateBy")) {
             setFieldValByName("updateBy", getUsername(), metaObject);
