@@ -187,6 +187,7 @@ export default {
       form.depts.forEach(function(dept) {
         _this.deptDatas.push(dept.id)
       })
+      form.menus = null
     },
     // 提交前做的操作
     [CRUD.HOOK.afterValidateCU](crud) {
