@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
@@ -31,8 +31,8 @@ import java.sql.Timestamp;
 * @author ${author}
 * @date ${date}
 */
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName("${tableName}")

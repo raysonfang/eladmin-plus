@@ -1,8 +1,8 @@
 package ${package}.service.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 <#if hasTimestamp>
 import java.sql.Timestamp;
@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.io.Serializable;
 import java.util.Date;
 import java.sql.Timestamp;
+import io.swagger.annotations.ApiModelProperty;
 <#if !auto && pkColumnType == 'Long'>
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
@@ -22,8 +23,8 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 * @author ${author}
 * @date ${date}
 */
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class ${className}Dto implements Serializable {
@@ -31,6 +32,9 @@ public class ${className}Dto implements Serializable {
 <#if columns??>
     <#list columns as column>
 
+    <#if column.remark != ''>
+    @ApiModelProperty(value = "${column.remark}")
+    </#if>
     <#if column.columnKey = 'PRI'>
     <#if !auto && pkColumnType = 'Long'>
     /** 防止精度丢失 */
