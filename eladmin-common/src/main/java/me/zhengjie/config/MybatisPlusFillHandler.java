@@ -21,7 +21,7 @@ public class MybatisPlusFillHandler implements MetaObjectHandler{
         if (metaObject.hasSetter("createTime")) {
             Class<?> clazz = metaObject.getSetterType("createTime");
             if(Long.class.getName().equals(clazz.getName())) {
-                setFieldValByName("createTime", currentTime.getTime(), metaObject);
+                setFieldValByName("createTime", System.currentTimeMillis(), metaObject);
             } else {
                 setFieldValByName("createTime", currentTime, metaObject);
             }
@@ -32,7 +32,7 @@ public class MybatisPlusFillHandler implements MetaObjectHandler{
         if (metaObject.hasSetter("updateTime")) {
             Class<?> clazz = metaObject.getSetterType("updateTime");
             if(Long.class.getName().equals(clazz.getName())) {
-                setFieldValByName("updateTime", currentTime.getTime(), metaObject);
+                setFieldValByName("updateTime", System.currentTimeMillis(), metaObject);
             }else {
                 setFieldValByName("updateTime", currentTime, metaObject);
             }
@@ -48,7 +48,7 @@ public class MybatisPlusFillHandler implements MetaObjectHandler{
         if (metaObject.hasSetter("updateTime")) {
             Class<?> clazz = metaObject.getSetterType("updateTime");
             if(Long.class.getName().equals(clazz.getName())) {
-                setFieldValByName("updateTime", currentTime.getTime(), metaObject);
+                setFieldValByName("updateTime", System.currentTimeMillis(), metaObject);
             }else {
                 setFieldValByName("updateTime", currentTime, metaObject);
             }
