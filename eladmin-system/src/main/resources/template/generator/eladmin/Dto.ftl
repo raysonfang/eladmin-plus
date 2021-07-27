@@ -1,8 +1,9 @@
 package ${package}.service.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 <#if hasTimestamp>
 import java.sql.Timestamp;
@@ -25,7 +26,9 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 */
 @Data
 @Builder
+@Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class ${className}Dto implements Serializable {
     private static final long serialVersionUID = 1L;
