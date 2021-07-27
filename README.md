@@ -6,7 +6,8 @@
 
 # eladmin-plus
 eladmin的mybatis-plus移植版本。目前更新到2021年7月份的2.6版本。<br>
-对应前端vue: eladmin-plus/eladmin-ui
+
+对应前端vue: [eladmin-plus/eladmin-ui](https://gitee.com/rayson517/eladmin-plus/tree/master/eladmin-ui)
 
 本项目只是将eladmin的dao层从JPA改为Mybatis-Plus，log日志在生产环境取消彩色。
 其它地方没有什么修改，包括数据库结构和web前端。
@@ -74,5 +75,5 @@ eladmin的mybatis-plus移植版本。目前更新到2021年7月份的2.6版本�
 - eladmin-tools 系统第三方工具模块
 - eladmin-generator 系统代码生成模块
 - eladmin-ui 系统前端Vue代码
-
+```
 **原项目地址：**  [https://github.com/elunez/eladmin](https://github.com/elunez/eladmin)
