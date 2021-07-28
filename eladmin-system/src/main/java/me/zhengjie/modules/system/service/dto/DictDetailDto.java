@@ -3,7 +3,6 @@ package me.zhengjie.modules.system.service.dto;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
-import java.sql.Timestamp;
 
 /**
 * @author jinjin

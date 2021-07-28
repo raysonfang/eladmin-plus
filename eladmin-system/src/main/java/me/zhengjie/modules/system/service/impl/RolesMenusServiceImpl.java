@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class RolesMenusServiceImpl extends CommonServiceImpl<RolesMenus> implements RolesMenusService {
+public class RolesMenusServiceImpl extends CommonServiceImpl<RolesMenusMapper, RolesMenus> implements RolesMenusService {
 
     private final RolesMenusMapper rolesMenusMapper;
 

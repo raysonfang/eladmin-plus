@@ -37,7 +37,7 @@ import java.util.*;
 @AllArgsConstructor
 // @CacheConfig(cacheNames = DatabaseService.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DatabaseServiceImpl extends CommonServiceImpl<Database> implements DatabaseService {
+public class DatabaseServiceImpl extends CommonServiceImpl<DatabaseMapper, Database> implements DatabaseService {
 
     // private final RedisUtils redisUtils;
     private final DatabaseMapper databaseMapper;

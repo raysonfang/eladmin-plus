@@ -6,12 +6,17 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import lombok.experimental.Accessors;
+import me.zhengjie.base.CommonEntity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,12 +25,14 @@ import java.util.Date;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName("mnt_app")
-public class App implements Serializable {
+public class App extends CommonEntity<App> implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
@@ -53,22 +60,6 @@ public class App implements Serializable {
 
     @ApiModelProperty(value = "部署脚本")
     private String deployScript;
-
-    @ApiModelProperty(value = "创建者")
-    @TableField(fill= FieldFill.INSERT)
-    private String createBy;
-
-    @ApiModelProperty(value = "更新者")
-    @TableField(fill= FieldFill.INSERT_UPDATE)
-    private String updateBy;
-
-    @ApiModelProperty(value = "创建日期")
-    @TableField(fill= FieldFill.INSERT)
-    private Date createTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill= FieldFill.INSERT_UPDATE)
-    private Date updateTime;
 
     public void copyFrom(App source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));

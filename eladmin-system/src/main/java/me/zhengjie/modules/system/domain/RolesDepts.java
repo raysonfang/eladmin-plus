@@ -5,8 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -15,6 +19,10 @@ import java.io.Serializable;
  * Created by jinjin on 2020-09-25.
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(value = { "handler" })
 @TableName("sys_roles_depts")

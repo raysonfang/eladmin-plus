@@ -57,7 +57,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "qiNiu")
-public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContent> implements QiNiuService {
+public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, QiniuContent> implements QiNiuService {
 
     private final QiniuConfigMapper qiNiuConfigRepository;
     private final QiniuContentMapper qiniuContentRepository;

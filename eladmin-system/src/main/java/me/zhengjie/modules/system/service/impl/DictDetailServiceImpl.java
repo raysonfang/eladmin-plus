@@ -37,7 +37,7 @@ import java.util.List;
 @AllArgsConstructor
 @CacheConfig(cacheNames = "dictDetail")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DictDetailServiceImpl extends CommonServiceImpl<DictDetail> implements DictDetailService {
+public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, DictDetail> implements DictDetailService {
 
     private final DictDetailMapper dictDetailMapper;
     private final DictMapper dictMapper;

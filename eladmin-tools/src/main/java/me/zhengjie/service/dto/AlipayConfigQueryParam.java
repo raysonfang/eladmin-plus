@@ -1,5 +1,6 @@
 package me.zhengjie.service.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
@@ -11,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
 public class AlipayConfigQueryParam{
 }

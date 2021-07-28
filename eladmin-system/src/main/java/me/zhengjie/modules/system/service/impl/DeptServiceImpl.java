@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @CacheConfig(cacheNames = "dept")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DeptServiceImpl extends CommonServiceImpl<Dept> implements DeptService {
+public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> implements DeptService {
 
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;

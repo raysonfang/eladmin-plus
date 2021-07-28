@@ -1,7 +1,6 @@
 package me.zhengjie.base;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,8 +11,7 @@ import java.util.Date;
  *
  * Created by jinjin on 2020-09-22.
  */
-@Getter
-@Setter
+@Data
 public abstract class CommonDto implements Serializable{
 
     private String createBy;

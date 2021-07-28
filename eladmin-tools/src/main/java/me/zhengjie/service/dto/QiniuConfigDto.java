@@ -1,5 +1,6 @@
 package me.zhengjie.service.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +15,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class QiniuConfigDto implements Serializable {

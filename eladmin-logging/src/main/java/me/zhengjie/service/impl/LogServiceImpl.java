@@ -46,7 +46,7 @@ import java.util.*;
 @AllArgsConstructor
 // @CacheConfig(cacheNames = LogService.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class LogServiceImpl extends CommonServiceImpl<Log> implements LogService {
+public class LogServiceImpl extends CommonServiceImpl<LogMapper, Log> implements LogService {
 
     // private final RedisUtils redisUtils;
     private final LogMapper logMapper;
@@ -77,7 +77,7 @@ public class LogServiceImpl extends CommonServiceImpl<Log> implements LogService
     @Override
     // @Cacheable(key = "'id:' + #p0")
     public Log findById(Long id) {
-        return logMapper.selectById(id);
+        return getById(id);
     }
 
     @Override

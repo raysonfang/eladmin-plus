@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class UsersJobsServiceImpl extends CommonServiceImpl<UsersJobs> implements UsersJobsService {
+public class UsersJobsServiceImpl extends CommonServiceImpl<UsersJobsMapper, UsersJobs> implements UsersJobsService {
 
     private final UsersJobsMapper usersJobsMapper;
 

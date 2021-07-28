@@ -18,6 +18,7 @@ package me.zhengjie.service.impl;
 import cn.hutool.extra.mail.Mail;
 import cn.hutool.extra.mail.MailAccount;
 import lombok.RequiredArgsConstructor;
+import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.domain.EmailConfig;
 import me.zhengjie.domain.vo.EmailVo;
 import me.zhengjie.exception.BadRequestException;
@@ -37,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "email")
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl extends CommonServiceImpl<EmailConfigMapper, EmailConfig> implements EmailService {
 
     private final EmailConfigMapper emailRepository;
 

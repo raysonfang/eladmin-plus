@@ -20,6 +20,7 @@ import cn.hutool.core.util.ZipUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.domain.GenConfig;
@@ -49,11 +50,11 @@ import java.util.stream.Collectors;
  * @author Zheng Jie
  * @date 2019-01-02
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class GeneratorServiceImpl extends CommonServiceImpl<ColumnInfo> implements GeneratorService {
+public class GeneratorServiceImpl extends CommonServiceImpl<ColumnInfoMapper, ColumnInfo> implements GeneratorService {
 
-    private static final Logger log = LoggerFactory.getLogger(GeneratorServiceImpl.class);
     private final ColumnInfoMapper columnInfoMapper;
 
     @Override

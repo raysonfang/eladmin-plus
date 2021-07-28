@@ -41,7 +41,9 @@ public interface AppService  extends CommonService<App>{
     /**
      * 插入一条新数据。
      */
+    @Override
     boolean save(App resources);
+    @Override
     boolean updateById(App resources);
     boolean removeById(Long id);
     boolean removeByIds(Set<Long> ids);

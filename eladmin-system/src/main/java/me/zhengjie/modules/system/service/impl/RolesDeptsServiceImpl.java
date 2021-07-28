@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class RolesDeptsServiceImpl extends CommonServiceImpl<RolesDepts> implements RolesDeptsService {
+public class RolesDeptsServiceImpl extends CommonServiceImpl<RolesDeptsMapper, RolesDepts> implements RolesDeptsService {
     private final RolesDeptsMapper rolesDeptsMapper;
 
     @Override

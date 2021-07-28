@@ -19,9 +19,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import me.zhengjie.base.CommonModel;
 import me.zhengjie.utils.GenUtil;
 import java.io.Serializable;
 
@@ -30,11 +35,13 @@ import java.io.Serializable;
  * @author Zheng Jie
  * @date 2019-01-02
  */
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @TableName("code_column_config")
-public class ColumnInfo implements Serializable {
+public class ColumnInfo extends CommonModel<ColumnInfo> implements Serializable {
 
     @ApiModelProperty(value = "ID", hidden = true)
     @TableId(value = "column_id", type= IdType.AUTO)

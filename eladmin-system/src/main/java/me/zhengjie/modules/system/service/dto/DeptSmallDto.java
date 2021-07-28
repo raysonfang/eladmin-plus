@@ -17,7 +17,6 @@ package me.zhengjie.modules.system.service.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 

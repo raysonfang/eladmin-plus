@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 @RequiredArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class LocalStorageServiceImpl extends CommonServiceImpl<LocalStorage> implements LocalStorageService {
+public class LocalStorageServiceImpl extends CommonServiceImpl<LocalStorageMapper, LocalStorage> implements LocalStorageService {
 
     private final FileProperties properties;
     private final LocalStorageMapper localStorageMapper;

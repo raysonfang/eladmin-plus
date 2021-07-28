@@ -1,5 +1,6 @@
 package me.zhengjie.modules.quartz.service.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import me.zhengjie.annotation.Query;
@@ -12,8 +13,7 @@ import java.util.List;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
 public class QuartzLogQueryParam {
 
     @Query

@@ -2,6 +2,7 @@ package me.zhengjie.modules.mnt.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
@@ -30,11 +31,12 @@ import java.util.*;
 * @author jinjin
 * @date 2020-09-27
 */
+@Slf4j
 @Service
 @AllArgsConstructor
 // @CacheConfig(cacheNames = DeployHistoryService.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DeployHistoryServiceImpl extends CommonServiceImpl<DeployHistory> implements DeployHistoryService {
+public class DeployHistoryServiceImpl extends CommonServiceImpl<DeployHistoryMapper, DeployHistory> implements DeployHistoryService {
 
     // private final RedisUtils redisUtils;
     private final DeployHistoryMapper deployHistoryMapper;

@@ -20,6 +20,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import lombok.RequiredArgsConstructor;
+import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.domain.vo.TradeVo;
 import me.zhengjie.domain.AlipayConfig;
 import me.zhengjie.exception.BadRequestException;
@@ -38,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "aliPay")
-public class AliPayServiceImpl implements AliPayService {
+public class AliPayServiceImpl extends CommonServiceImpl<AlipayConfigMapper, AlipayConfig> implements AliPayService {
 
     private final AlipayConfigMapper alipayRepository;
 

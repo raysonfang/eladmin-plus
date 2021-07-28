@@ -46,7 +46,7 @@ import java.util.*;
 @AllArgsConstructor
 @CacheConfig(cacheNames = "job")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class JobServiceImpl extends CommonServiceImpl<Job> implements JobService {
+public class JobServiceImpl extends CommonServiceImpl<JobMapper, Job> implements JobService {
 
     private final JobMapper jobMapper;
     private final UsersJobsMapper usersJobsMapper;

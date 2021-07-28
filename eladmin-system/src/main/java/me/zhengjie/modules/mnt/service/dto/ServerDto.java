@@ -1,5 +1,6 @@
 package me.zhengjie.modules.mnt.service.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,7 @@ import java.util.Objects;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class ServerDto extends CommonDto implements Serializable {
     private static final long serialVersionUID = 1L;

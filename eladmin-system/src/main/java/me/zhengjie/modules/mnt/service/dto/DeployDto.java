@@ -1,6 +1,7 @@
 package me.zhengjie.modules.mnt.service.dto;
 
 import cn.hutool.core.collection.CollectionUtil;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +16,7 @@ import java.util.stream.Collectors;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class DeployDto extends CommonDto implements Serializable {
     private static final long serialVersionUID = 1L;

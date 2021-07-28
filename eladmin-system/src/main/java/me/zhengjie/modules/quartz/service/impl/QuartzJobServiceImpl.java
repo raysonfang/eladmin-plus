@@ -3,6 +3,7 @@ package me.zhengjie.modules.quartz.service.impl;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
@@ -35,11 +36,12 @@ import java.util.*;
 * @author jinjin
 * @date 2020-09-27
 */
+@Slf4j
 @Service
 @AllArgsConstructor
 // @CacheConfig(cacheNames = QuartzJobService.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class QuartzJobServiceImpl extends CommonServiceImpl<QuartzJob> implements QuartzJobService {
+public class QuartzJobServiceImpl extends CommonServiceImpl<QuartzJobMapper, QuartzJob> implements QuartzJobService {
 
     private final QuartzManage quartzManage;
     private final QuartzJobMapper jobMapper;

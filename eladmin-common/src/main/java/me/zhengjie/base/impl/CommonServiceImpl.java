@@ -1,9 +1,13 @@
 package me.zhengjie.base.impl;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.zhengjie.base.CommonService;
 
 /**
- * Created by jinjin on 2020-09-22.
- */
-public abstract class CommonServiceImpl<T> implements CommonService<T> {
+* 公共抽象service实现类
+* @author fanglei
+* @date 2021/07/28
+*/
+public abstract class CommonServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements CommonService<T> {
 }

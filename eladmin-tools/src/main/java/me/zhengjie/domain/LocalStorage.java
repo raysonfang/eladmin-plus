@@ -4,12 +4,16 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import lombok.experimental.Accessors;
 import me.zhengjie.base.CommonEntity;
 
 import java.io.Serializable;
@@ -18,12 +22,14 @@ import java.io.Serializable;
 * @author jinjin
 * @date 2020-09-27
 */
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName("tool_local_storage")
-public class LocalStorage extends CommonEntity implements Serializable {
+public class LocalStorage extends CommonEntity<LocalStorage> implements Serializable {
     private static final long serialVersionUID = 1L;
 
 

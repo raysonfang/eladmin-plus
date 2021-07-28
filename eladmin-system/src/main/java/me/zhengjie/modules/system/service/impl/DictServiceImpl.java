@@ -40,7 +40,7 @@ import java.util.*;
 @AllArgsConstructor
 @CacheConfig(cacheNames = DictServiceImpl.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DictServiceImpl extends CommonServiceImpl<Dict> implements DictService {
+public class DictServiceImpl extends CommonServiceImpl<DictMapper, Dict> implements DictService {
 
     public static final String CACHE_KEY = "${changeClassName}";
     private final RedisUtils redisUtils;

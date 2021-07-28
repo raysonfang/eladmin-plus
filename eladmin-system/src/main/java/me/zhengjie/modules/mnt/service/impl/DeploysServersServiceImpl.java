@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.mnt.domain.DeploysServers;
 import me.zhengjie.modules.mnt.mapper.DeploysServersMapper;
@@ -18,10 +19,11 @@ import java.util.stream.Collectors;
 /**
  * Created by jinjin on 2020-09-25.
  */
+@Slf4j
 @Service
 @AllArgsConstructor
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DeploysServersServiceImpl extends CommonServiceImpl<DeploysServers> implements DeploysServersService {
+public class DeploysServersServiceImpl extends CommonServiceImpl<DeploysServersMapper, DeploysServers> implements DeploysServersService {
     private final DeploysServersMapper deploysServersMapper;
 
     @Override

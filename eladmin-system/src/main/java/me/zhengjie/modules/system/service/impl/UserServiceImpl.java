@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @CacheConfig(cacheNames = "user")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class UserServiceImpl extends CommonServiceImpl<User> implements UserService {
+public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> implements UserService {
 
     private final FileProperties properties;
     private final RedisUtils redisUtils;

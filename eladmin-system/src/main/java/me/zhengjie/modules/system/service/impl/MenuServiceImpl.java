@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @CacheConfig(cacheNames = "menu")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class MenuServiceImpl extends CommonServiceImpl<Menu> implements MenuService {
+public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> implements MenuService {
 
     private final RoleService roleService;
     private final UserMapper userMapper;

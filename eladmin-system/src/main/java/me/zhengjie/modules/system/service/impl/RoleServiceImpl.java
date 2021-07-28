@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CacheConfig(cacheNames = "role")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class RoleServiceImpl extends CommonServiceImpl<Role> implements RoleService {
+public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> implements RoleService {
 
     private final RoleMapper roleMapper;
     private final MenuMapper menuMapper;

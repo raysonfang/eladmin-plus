@@ -10,8 +10,7 @@ import java.util.Objects;
 * @author jinjin
 * @date 2020-09-25
 */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class JobDto extends CommonDto implements Serializable {
     private static final long serialVersionUID = 1L;

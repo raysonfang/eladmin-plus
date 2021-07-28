@@ -47,7 +47,7 @@ import java.util.*;
 @AllArgsConstructor
 // @CacheConfig(cacheNames = DeployService.CACHE_KEY)
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DeployServiceImpl extends CommonServiceImpl<Deploy> implements DeployService {
+public class DeployServiceImpl extends CommonServiceImpl<DeployMapper, Deploy> implements DeployService {
 
     private final String FILE_SEPARATOR = "/";
     // private final RedisUtils redisUtils;
