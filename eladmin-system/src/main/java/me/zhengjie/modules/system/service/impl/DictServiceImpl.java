@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
-import me.zhengjie.modules.system.service.DictDetailService;
+import me.zhengjie.modules.system.domain.DictDetail;
+import me.zhengjie.modules.system.service.mapper.DictDetailMapper;
 import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
 import me.zhengjie.utils.FileUtil;
@@ -19,6 +20,7 @@ import me.zhengjie.utils.RedisUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +47,7 @@ public class DictServiceImpl extends CommonServiceImpl<DictMapper, Dict> impleme
     public static final String CACHE_KEY = "${changeClassName}";
     private final RedisUtils redisUtils;
     private final DictMapper dictMapper;
-    private final DictDetailService detailService;
+    private final DictDetailMapper detailMapper;
 
     @Override
     //@Cacheable
@@ -93,7 +95,7 @@ public class DictServiceImpl extends CommonServiceImpl<DictMapper, Dict> impleme
         List<Dict> dicts = dictMapper.selectBatchIds(ids);
         boolean ret = dictMapper.deleteBatchIds(ids) > 0;
         for (Dict dict : dicts) {
-            detailService.removeByDictId(dict.getId());
+            detailMapper.lambdaUpdate().eq(DictDetail::getDictId, dict.getId()).remove();
             delCaches(dict);
         }
         return ret;

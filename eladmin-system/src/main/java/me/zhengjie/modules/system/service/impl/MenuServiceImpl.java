@@ -2,9 +2,7 @@ package me.zhengjie.modules.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.QueryHelpMybatisPlus;
@@ -12,7 +10,6 @@ import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.exception.EntityExistException;
 import me.zhengjie.modules.system.domain.Menu;
-import me.zhengjie.modules.system.domain.Role;
 import me.zhengjie.modules.system.domain.User;
 import me.zhengjie.modules.system.service.MenuService;
 import me.zhengjie.modules.system.service.RoleService;
@@ -284,8 +281,6 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
         if (pid != null && !pid.equals(0L)) {
             menus = lambdaQuery().eq(Menu::getPid, pid).orderByAsc(Menu::getMenuSort).list();
         } else {
-            QueryWrapper<Menu> query = new QueryWrapper<Menu>();
-            query.lambda().isNull(Menu::getPid).orderByAsc(Menu::getMenuSort);
             menus = lambdaQuery().isNull(Menu::getPid).orderByAsc(Menu::getMenuSort).list();
         }
         return ConvertUtil.convertList(menus, MenuDto.class);

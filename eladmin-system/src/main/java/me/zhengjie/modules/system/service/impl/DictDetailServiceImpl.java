@@ -1,14 +1,11 @@
 package me.zhengjie.modules.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.domain.Dict;
-import me.zhengjie.modules.system.service.DictService;
 import me.zhengjie.modules.system.service.mapper.DictMapper;
 import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
@@ -42,7 +39,6 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
 
     private final DictDetailMapper dictDetailMapper;
     private final DictMapper dictMapper;
-    private final DictService dictService;
     private final RedisUtils redisUtils;
 
     @Override
@@ -61,9 +57,7 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
 
     @Override
     public List<DictDetailDto> getDictByName(String dictName) {
-        QueryWrapper<Dict> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(Dict::getName, dictName);
-        Dict dict = dictService.lambdaQuery().eq(Dict::getName, dictName).one();
+        Dict dict = dictMapper.lambdaQuery().eq(Dict::getName, dictName).one();
         List<DictDetailDto> ret = dictDetailMapper.getDictDetailsByDictName(dictName);
         redisUtils.set(CacheKey.DICTDEAIL_DICTID + dict.getId(), ret);
         return ret;
@@ -109,8 +103,6 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeByDictId(Long id) {
-        UpdateWrapper<DictDetail> wrapper1 = new UpdateWrapper<>();
-        wrapper1.lambda().eq(DictDetail::getDictId, id);
         boolean ret = lambdaUpdate().eq(DictDetail::getDictId, id).remove();
         delCaches(id);
         return ret;

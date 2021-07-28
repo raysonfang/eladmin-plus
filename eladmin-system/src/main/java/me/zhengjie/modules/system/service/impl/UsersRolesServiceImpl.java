@@ -1,7 +1,5 @@
 package me.zhengjie.modules.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.domain.UsersRoles;

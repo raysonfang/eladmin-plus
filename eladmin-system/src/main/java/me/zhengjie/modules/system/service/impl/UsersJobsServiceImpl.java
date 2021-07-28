@@ -1,7 +1,6 @@
 package me.zhengjie.modules.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.AllArgsConstructor;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.domain.UsersJobs;
@@ -32,9 +31,7 @@ public class UsersJobsServiceImpl extends CommonServiceImpl<UsersJobsMapper, Use
 
     @Override
     public List<Long> queryJobIdByUserId(Long id) {
-        LambdaQueryWrapper<UsersJobs> query = new LambdaQueryWrapper<>();
-        query.eq(UsersJobs::getUserId, id);
-        return usersJobsMapper.selectList(query).stream().map(UsersJobs::getJobId)
+        return lambdaQuery().eq(UsersJobs::getUserId, id).list().stream().map(UsersJobs::getJobId)
                 .collect(Collectors.toList());
     }
 
