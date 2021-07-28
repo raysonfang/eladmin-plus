@@ -28,33 +28,29 @@ public class DeploysServersServiceImpl extends CommonServiceImpl<DeploysServersM
 
     @Override
     public List<Long> queryDeployIdByServerId(Long id) {
-        LambdaQueryWrapper<DeploysServers> query = new LambdaQueryWrapper<>();
-        query.eq(DeploysServers::getServerId, id);
-        return deploysServersMapper.selectList(query).stream().map(DeploysServers::getDeployId)
+        return lambdaQuery()
+                .eq(DeploysServers::getServerId, id)
+                .list().stream().map(DeploysServers::getDeployId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Long> queryServerIdByDeployId(Long id) {
-        LambdaQueryWrapper<DeploysServers> query = new LambdaQueryWrapper<>();
-        query.eq(DeploysServers::getDeployId, id);
-        return deploysServersMapper.selectList(query).stream().map(DeploysServers::getServerId)
+        return lambdaQuery()
+                .eq(DeploysServers::getDeployId, id)
+                .list().stream().map(DeploysServers::getServerId)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByDeployId(Long id) {
-        LambdaUpdateWrapper<DeploysServers> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(DeploysServers::getDeployId, id);
-        return deploysServersMapper.delete(wrapper);
+    public boolean removeByDeployId(Long id) {
+        return lambdaUpdate().eq(DeploysServers::getDeployId, id).remove();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByServerId(Long id) {
-        LambdaUpdateWrapper<DeploysServers> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(DeploysServers::getServerId, id);
-        return deploysServersMapper.delete(wrapper);
+    public boolean removeByServerId(Long id) {
+        return lambdaUpdate().eq(DeploysServers::getServerId, id).remove();
     }
 }

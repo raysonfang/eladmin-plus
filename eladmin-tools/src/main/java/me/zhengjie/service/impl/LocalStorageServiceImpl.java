@@ -67,7 +67,7 @@ public class LocalStorageServiceImpl extends CommonServiceImpl<LocalStorageMappe
 
     @Override
     public LocalStorageDto findById(Long id){
-        return ConvertUtil.convert(localStorageMapper.selectById(id), LocalStorageDto.class);
+        return ConvertUtil.convert(getById(id), LocalStorageDto.class);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class LocalStorageServiceImpl extends CommonServiceImpl<LocalStorageMappe
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(LocalStorage resources) {
-        localStorageMapper.updateById(resources);
+        updateById(resources);
         // delCaches(resources.id);
     }
 
@@ -109,9 +109,9 @@ public class LocalStorageServiceImpl extends CommonServiceImpl<LocalStorageMappe
     @Transactional(rollbackFor = Exception.class)
     public void deleteAll(Long[] ids) {
         for (Long id : ids) {
-            LocalStorage storage = localStorageMapper.selectById(id);
+            LocalStorage storage = getById(id);
             FileUtil.del(storage.getPath());
-            localStorageMapper.deleteById(id);
+            removeById(id);
         }
     }
 

@@ -41,12 +41,12 @@ import org.springframework.transaction.annotation.Transactional;
 @CacheConfig(cacheNames = "aliPay")
 public class AliPayServiceImpl extends CommonServiceImpl<AlipayConfigMapper, AlipayConfig> implements AliPayService {
 
-    private final AlipayConfigMapper alipayRepository;
+    private final AlipayConfigMapper alipayConfigMapper;
 
     @Override
     @Cacheable(key = "'config'")
     public AlipayConfig find() {
-        return alipayRepository.selectById(1L);
+        return getById(1L);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AliPayServiceImpl extends CommonServiceImpl<AlipayConfigMapper, Ali
     @Transactional(rollbackFor = Exception.class)
     public AlipayConfig config(AlipayConfig alipayConfig) {
         alipayConfig.setId(1L);
-        alipayRepository.updateById(alipayConfig);
+        updateById(alipayConfig);
         return alipayConfig;
     }
 

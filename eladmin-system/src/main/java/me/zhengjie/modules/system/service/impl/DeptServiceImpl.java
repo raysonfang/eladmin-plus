@@ -176,15 +176,12 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
         if (deptId == null) {
             return;
         }
-        QueryWrapper<Dept> query = new QueryWrapper<Dept>();
-        query.lambda().eq(Dept::getPid, deptId);
-        int count = deptMapper.selectCount(query);
-
-        UpdateWrapper<Dept> update = new UpdateWrapper<Dept>();
-        update.lambda().eq(Dept::getId, deptId);
+        int count = lambdaQuery().eq(Dept::getPid, deptId).count();
+        
         Dept dept = new Dept();
         dept.setSubCount(count);
-        deptMapper.update(dept, update);
+        lambdaUpdate().eq(Dept::getId, deptId)
+                .update(dept);
     }
 
     @Override
@@ -211,9 +208,7 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
     // @Cacheable(key = "'pid:' + #p0")
     @Override
     public List<Dept> findByPid(long pid) {
-        QueryWrapper<Dept> query = new QueryWrapper<>();
-        query.lambda().eq(Dept::getPid, pid);
-        return deptMapper.selectList(query);
+        return lambdaQuery().eq(Dept::getPid, pid).list();
     }
 
     @Override
@@ -224,14 +219,10 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
     @Override
     public List<DeptDto> getSuperior(DeptDto deptDto, List<Dept> depts) {
         if (deptDto.getPid() == null) {
-            QueryWrapper<Dept> query = new QueryWrapper<Dept>();
-            query.lambda().isNull(Dept::getPid);
-            depts.addAll(deptMapper.selectList(query));
+            depts.addAll(lambdaQuery().isNull(Dept::getPid).list());
             return ConvertUtil.convertList(depts, DeptDto.class);
         }
-        QueryWrapper<Dept> query = new QueryWrapper<Dept>();
-        query.lambda().eq(Dept::getPid, deptDto.getPid());
-        depts.addAll(deptMapper.selectList(query));
+        depts.addAll(lambdaQuery().eq(Dept::getPid, deptDto.getPid()).list());
         return getSuperior(ConvertUtil.convert(getById(deptDto.getPid()), DeptDto.class), depts);
     }
 
@@ -295,9 +286,7 @@ public class DeptServiceImpl extends CommonServiceImpl<DeptMapper, Dept> impleme
         List<Long> list = new ArrayList<>();
         deptList.forEach(dept -> {
             if (dept != null && dept.getEnabled()) {
-                QueryWrapper<Dept> query = new QueryWrapper<Dept>();
-                query.lambda().eq(Dept::getPid, dept.getId());
-                List<Dept> depts = deptMapper.selectList(query);
+                List<Dept> depts = lambdaQuery().eq(Dept::getPid, dept.getId()).list();
                 if (depts.size() != 0) {
                     list.addAll(getDeptChildren(dept.getId(), depts));
                 }

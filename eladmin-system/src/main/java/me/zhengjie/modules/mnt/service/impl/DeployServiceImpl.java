@@ -71,10 +71,10 @@ public class DeployServiceImpl extends CommonServiceImpl<DeployMapper, Deploy> i
         PageInfo<DeployDto> pi = ConvertUtil.convertPage(pageList, DeployDto.class);
         for (DeployDto dd: pi.getContent() ) {
             dd.setApp(appService.findById(dd.getAppId()));
-
-            QueryWrapper<Server> wrapper = new QueryWrapper<>();
-            wrapper.lambda().in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()));
-            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverMapper.selectList(wrapper), ServerDto.class)));
+    
+            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverService.lambdaQuery()
+                    .in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()))
+                    .list(), ServerDto.class)));
         }
         return pi;
     }
@@ -87,7 +87,9 @@ public class DeployServiceImpl extends CommonServiceImpl<DeployMapper, Deploy> i
 
             QueryWrapper<Server> wrapper = new QueryWrapper<>();
             wrapper.lambda().in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()));
-            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverMapper.selectList(wrapper), ServerDto.class)));
+            dd.setDeploys(new HashSet<>(ConvertUtil.convertList(serverService.lambdaQuery()
+                    .in(Server::getId, deploysServersService.queryServerIdByDeployId(dd.getId()))
+                    .list(), ServerDto.class)));
         }
         return list;
     }

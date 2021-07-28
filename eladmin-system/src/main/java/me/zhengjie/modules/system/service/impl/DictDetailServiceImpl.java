@@ -8,6 +8,7 @@ import me.zhengjie.base.PageInfo;
 import me.zhengjie.base.QueryHelpMybatisPlus;
 import me.zhengjie.base.impl.CommonServiceImpl;
 import me.zhengjie.modules.system.domain.Dict;
+import me.zhengjie.modules.system.service.DictService;
 import me.zhengjie.modules.system.service.mapper.DictMapper;
 import me.zhengjie.utils.CacheKey;
 import me.zhengjie.utils.ConvertUtil;
@@ -41,6 +42,7 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
 
     private final DictDetailMapper dictDetailMapper;
     private final DictMapper dictMapper;
+    private final DictService dictService;
     private final RedisUtils redisUtils;
 
     @Override
@@ -61,7 +63,7 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
     public List<DictDetailDto> getDictByName(String dictName) {
         QueryWrapper<Dict> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(Dict::getName, dictName);
-        Dict dict = dictMapper.selectOne(wrapper);
+        Dict dict = dictService.lambdaQuery().eq(Dict::getName, dictName).one();
         List<DictDetailDto> ret = dictDetailMapper.getDictDetailsByDictName(dictName);
         redisUtils.set(CacheKey.DICTDEAIL_DICTID + dict.getId(), ret);
         return ret;
@@ -109,7 +111,7 @@ public class DictDetailServiceImpl extends CommonServiceImpl<DictDetailMapper, D
     public boolean removeByDictId(Long id) {
         UpdateWrapper<DictDetail> wrapper1 = new UpdateWrapper<>();
         wrapper1.lambda().eq(DictDetail::getDictId, id);
-        boolean ret = dictDetailMapper.delete(wrapper1) > 0;
+        boolean ret = lambdaUpdate().eq(DictDetail::getDictId, id).remove();
         delCaches(id);
         return ret;
     }

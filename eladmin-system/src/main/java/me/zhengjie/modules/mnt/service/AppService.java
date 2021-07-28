@@ -34,8 +34,7 @@ public interface AppService  extends CommonService<App>{
     * @return List<AppDto>
     */
     List<AppDto> queryAll(AppQueryParam query);
-
-    App getById(Long id);
+    
     AppDto findById(Long id);
 
     /**

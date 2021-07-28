@@ -82,9 +82,7 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
 
     @Override
     public List<RoleDto> queryAll() {
-        QueryWrapper<Role> query = new QueryWrapper<Role>();
-        query.lambda().orderByAsc(Role::getLevel);
-        List<RoleDto> list = ConvertUtil.convertList(roleMapper.selectList(query), RoleDto.class);
+        List<RoleDto> list = ConvertUtil.convertList(lambdaQuery().orderByAsc(Role::getLevel).list(), RoleDto.class);
         list.forEach(role -> {
             role.setMenus(ConvertUtil.convertSet(menuMapper.selectLink(role.getId()), MenuDto.class));
             role.setDepts(deptService.findByRoleId(role.getId()));
@@ -109,9 +107,7 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(RoleDto resources) {
-        QueryWrapper<Role> query = new QueryWrapper<Role>();
-        query.lambda().eq(Role::getName, resources.getName());
-        if (roleMapper.selectOne(query) != null) {
+        if (lambdaQuery().eq(Role::getName, resources.getName()).one() != null) {
             throw new EntityExistException(Role.class, "name", resources.getName());
         }
         Role newRole = ConvertUtil.convert(resources, Role.class);
@@ -133,9 +129,7 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
     @Transactional(rollbackFor = Exception.class)
     public boolean updateById(RoleDto resources){
         Role roleOld = getById(resources.getId());
-        QueryWrapper<Role> query = new QueryWrapper<Role>();
-        query.lambda().eq(Role::getName, resources.getName());
-        Role role1 = roleMapper.selectOne(query);
+        Role role1 = lambdaQuery().eq(Role::getName, resources.getName()).one();
         if (role1 != null && !role1.getId().equals(resources.getId())) {
             throw new EntityExistException(Role.class, "name", resources.getName());
         }
@@ -167,8 +161,7 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
         redisUtils.delByKeys("menu::user:", userIds);
         redisUtils.del("role::id:" + resources.getId());
         //this.saveOrUpdate(resources);
-        QueryWrapper<RolesMenus> query = new QueryWrapper<RolesMenus>();
-        query.lambda().eq(RolesMenus::getRoleId, resources.getId());
+        
         RolesMenus rm = new RolesMenus();
         List<Long> oldMenuIds = rolesMenusService.queryMenuIdByRoleId(resources.getId());
         List<Long> menuIds = resources.getMenus().stream().map(MenuDto::getId).collect(Collectors.toList());
@@ -176,8 +169,9 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
                 .collect(Collectors.toList());
         List<Long> addList = menuIds.stream().filter(item -> !oldMenuIds.contains(item)).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(deleteList)) {
-            query.lambda().in(RolesMenus::getMenuId, deleteList);
-            rolesMenusMapper.delete(query);
+            rolesMenusService.lambdaUpdate()
+                    .eq(RolesMenus::getRoleId, resources.getId())
+                    .in(RolesMenus::getMenuId, deleteList).remove();
         }
 
         addList.forEach(item -> {
@@ -239,9 +233,7 @@ public class RoleServiceImpl extends CommonServiceImpl<RoleMapper, Role> impleme
         }
         Set<Role> roles = roleMapper.selectLink(user.getId());
         Set<Long> roleIds = roles.stream().map(Role::getId).collect(Collectors.toSet());
-        QueryWrapper<RolesMenus> query = new QueryWrapper<RolesMenus>();
-        query.lambda().in(RolesMenus::getRoleId, roleIds);
-        Map<Long, List<RolesMenus>> roleMenuIds = rolesMenusMapper.selectList(query).stream()
+        Map<Long, List<RolesMenus>> roleMenuIds = rolesMenusService.lambdaQuery().in(RolesMenus::getRoleId, roleIds).list().stream()
                 .collect(Collectors.groupingBy(RolesMenus::getRoleId));
         Set<Long> menuIds = roleMenuIds.values().stream().flatMap(item -> item.stream().map(RolesMenus::getMenuId))
                 .collect(Collectors.toSet());

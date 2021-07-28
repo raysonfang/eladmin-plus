@@ -13,8 +13,8 @@ import java.util.List;
 public interface UsersRolesService extends CommonService<UsersRoles> {
     List<Long> queryUserIdByRoleId(Long id);
     List<Long> queryRoleIdByUserId(Long id);
-    int removeByRoleId(Long id);
-    int removeByUserId(Long id);
+    boolean removeByRoleId(Long id);
+    boolean removeByUserId(Long id);
 
 
 }

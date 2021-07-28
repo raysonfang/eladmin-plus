@@ -39,9 +39,9 @@ public class GenConfigServiceImpl extends CommonServiceImpl<GenConfigMapper, Gen
 
     @Override
     public GenConfig find(String tableName) {
-        QueryWrapper<GenConfig> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(GenConfig::getTableName, tableName);
-        GenConfig genConfig = genConfigMapper.selectOne(wrapper);
+        GenConfig genConfig = lambdaQuery()
+                .eq(GenConfig::getTableName, tableName)
+                .one();
         if(genConfig == null){
             return new GenConfig(tableName);
         }

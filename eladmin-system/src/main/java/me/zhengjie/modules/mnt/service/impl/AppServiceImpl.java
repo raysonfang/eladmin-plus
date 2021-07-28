@@ -54,12 +54,7 @@ public class AppServiceImpl extends CommonServiceImpl<AppMapper, App> implements
     public List<AppDto> queryAll(AppQueryParam query){
         return ConvertUtil.convertList(appMapper.selectList(QueryHelpMybatisPlus.getPredicate(query)), AppDto.class);
     }
-
-    @Override
-    public App getById(Long id) {
-        return appMapper.selectById(id);
-    }
-
+    
     @Override
     // @Cacheable(key = "'id:' + #p0")
     public AppDto findById(Long id) {

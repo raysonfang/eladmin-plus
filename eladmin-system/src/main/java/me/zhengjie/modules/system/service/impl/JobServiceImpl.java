@@ -81,9 +81,7 @@ public class JobServiceImpl extends CommonServiceImpl<JobMapper, Job> implements
     @CacheEvict(allEntries = true)
     @Transactional
     public boolean save(Job resources) {
-        QueryWrapper<Job> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Job::getName, resources.getName());
-        Job job = jobMapper.selectOne(queryWrapper);
+        Job job = lambdaQuery().eq(Job::getName, resources.getName()).one();
         if (job != null && ObjectUtil.notEqual(resources.getId(), job.getId())) {
             throw new EntityExistException(Job.class, "name", resources.getName());
         }
@@ -94,9 +92,7 @@ public class JobServiceImpl extends CommonServiceImpl<JobMapper, Job> implements
     @CacheEvict(allEntries = true)
     @Transactional
     public boolean updateById(Job resources){
-        QueryWrapper<Job> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Job::getName, resources.getName());
-        Job job = jobMapper.selectOne(queryWrapper);
+        Job job = lambdaQuery().eq(Job::getName, resources.getName()).one();
         if (job != null && ObjectUtil.notEqual(resources.getId(), job.getId())) {
             throw new EntityExistException(Job.class, "name", resources.getName());
         }
@@ -126,7 +122,7 @@ public class JobServiceImpl extends CommonServiceImpl<JobMapper, Job> implements
     public void verification(Set<Long> ids) {
         QueryWrapper<UsersJobs> wrapper = new QueryWrapper<>();
         wrapper.lambda().in(UsersJobs::getUserId, ids);
-        int count = usersJobsMapper.selectCount(wrapper);
+        int count = usersJobsService.lambdaQuery().in(UsersJobs::getUserId, ids).count();
         if(count > 0){
             throw new BadRequestException("所选的岗位中存在用户关联，请解除关联再试！");
         }

@@ -108,15 +108,11 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean save(Menu resources) {
-        QueryWrapper<Menu> query = new QueryWrapper<Menu>();
-        query.lambda().eq(Menu::getTitle, resources.getTitle());
-        if (menuMapper.selectOne(query) != null) {
+        if (lambdaQuery().eq(Menu::getTitle, resources.getTitle()).one() != null) {
             throw new EntityExistException(Menu.class, "title", resources.getTitle());
         }
         if (StringUtils.isNotBlank(resources.getComponentName())) {
-            QueryWrapper<Menu> query2 = new QueryWrapper<Menu>();
-            query2.lambda().eq(Menu::getComponentName, resources.getComponentName());
-            if (menuMapper.selectOne(query2) != null) {
+            if (lambdaQuery().eq(Menu::getComponentName, resources.getComponentName()).one() != null) {
                 throw new EntityExistException(Menu.class, "组件名称", resources.getComponentName());
             }
         }
@@ -160,9 +156,7 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
                 throw new BadRequestException("外链必须以http://或者https://开头");
             }
         }
-        QueryWrapper<Menu> query = new QueryWrapper<Menu>();
-        query.lambda().eq(Menu::getTitle, resources.getTitle());
-        Menu menu1 = menuMapper.selectOne(query);
+        Menu menu1 = lambdaQuery().eq(Menu::getTitle, resources.getTitle()).one();
 
         if (menu1 != null && !menu1.getId().equals(menu.getId())) {
             throw new EntityExistException(Menu.class, "name", resources.getTitle());
@@ -173,9 +167,7 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
         }
 
         if (StringUtils.isNotBlank(resources.getComponentName())) {
-            QueryWrapper<Menu> query2 = new QueryWrapper<Menu>();
-            query2.lambda().eq(Menu::getComponentName, resources.getComponentName());
-            menu1 = menuMapper.selectOne(query2);
+            menu1 = lambdaQuery().eq(Menu::getComponentName, resources.getComponentName()).one();
             if (menu1 != null && !menu1.getId().equals(menu.getId())) {
                 throw new EntityExistException(Menu.class, "componentName", resources.getComponentName());
             }
@@ -218,9 +210,7 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
     public Set<Menu> getChildMenus(List<Menu> menuList, Set<Menu> menuSet) {
         for (Menu menu : menuList) {
             menuSet.add(menu);
-            LambdaQueryWrapper<Menu> menuLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            menuLambdaQueryWrapper.eq(Menu::getPid, menu.getId());
-            List<Menu> menus = menuMapper.selectList(menuLambdaQueryWrapper);
+            List<Menu> menus = lambdaQuery().eq(Menu::getPid, menu.getId()).list();
             if(CollectionUtil.isNotEmpty(menus)){
                 getChildMenus(menus, menuSet);
             }
@@ -233,9 +223,7 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
         // 递归找出待删除的菜单
         for (Menu menu1 : menuList) {
             menuSet.add(menu1);
-            QueryWrapper<Menu> query = new QueryWrapper<Menu>();
-            query.lambda().eq(Menu::getPid, menu1.getId());
-            List<Menu> menus = menuMapper.selectList(query);
+            List<Menu> menus = lambdaQuery().eq(Menu::getPid, menu1.getId()).list();
             if (menus != null && menus.size() != 0) {
                 getDeleteMenus(menus, menuSet);
             }
@@ -294,27 +282,22 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
     public List<MenuDto> getMenus(Long pid) {
         List<Menu> menus;
         if (pid != null && !pid.equals(0L)) {
-            QueryWrapper<Menu> query = new QueryWrapper<Menu>();
-            query.lambda().eq(Menu::getPid, pid).orderByAsc(Menu::getMenuSort);
-            menus = menuMapper.selectList(query);
+            menus = lambdaQuery().eq(Menu::getPid, pid).orderByAsc(Menu::getMenuSort).list();
         } else {
             QueryWrapper<Menu> query = new QueryWrapper<Menu>();
             query.lambda().isNull(Menu::getPid).orderByAsc(Menu::getMenuSort);
-            menus = menuMapper.selectList(query);
+            menus = lambdaQuery().isNull(Menu::getPid).orderByAsc(Menu::getMenuSort).list();
         }
         return ConvertUtil.convertList(menus, MenuDto.class);
     }
 
     @Override
     public List<MenuDto> getSuperior(MenuDto menuDto, List<Menu> menus) {
-        QueryWrapper<Menu> query = new QueryWrapper<Menu>();
         if (menuDto.getPid() == null) {
-            query.lambda().isNull(Menu::getPid).orderByAsc(Menu::getMenuSort);
-            menus.addAll(menuMapper.selectList(query));
+            menus.addAll(lambdaQuery().isNull(Menu::getPid).orderByAsc(Menu::getMenuSort).list());
             return ConvertUtil.convertList(menus, MenuDto.class);
         }
-        query.lambda().eq(Menu::getPid, menuDto.getPid()).orderByAsc(Menu::getMenuSort);
-        menus.addAll(menuMapper.selectList(query));
+        menus.addAll(lambdaQuery().eq(Menu::getPid, menuDto.getPid()).orderByAsc(Menu::getMenuSort).list());
         return getSuperior(findById(menuDto.getPid()), menus);
     }
 
@@ -397,15 +380,10 @@ public class MenuServiceImpl extends CommonServiceImpl<MenuMapper, Menu> impleme
     }
 
     private void updateSubCnt(Long menuId) {
-        QueryWrapper<Menu> query = new QueryWrapper<Menu>();
-        query.lambda().eq(Menu::getPid, menuId);
-        int count = menuMapper.selectCount(query);
-
-        UpdateWrapper<Menu> update = new UpdateWrapper<Menu>();
-        update.lambda().eq(Menu::getId, menuId);
+        int count = lambdaQuery().eq(Menu::getPid, menuId).count();
         Menu menu = new Menu();
         menu.setSubCount(count);
-        menuMapper.update(menu, update);
+        lambdaUpdate().eq(Menu::getId, menuId).update(menu);
     }
 
     /**

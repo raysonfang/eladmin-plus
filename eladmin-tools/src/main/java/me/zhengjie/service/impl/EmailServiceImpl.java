@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @CacheConfig(cacheNames = "email")
 public class EmailServiceImpl extends CommonServiceImpl<EmailConfigMapper, EmailConfig> implements EmailService {
 
-    private final EmailConfigMapper emailRepository;
+    private final EmailConfigMapper emailConfigMapper;
 
     @Override
     @CachePut(key = "'config'")
@@ -51,14 +51,14 @@ public class EmailServiceImpl extends CommonServiceImpl<EmailConfigMapper, Email
             // 对称加密
             emailConfig.setPass(EncryptUtils.desEncrypt(emailConfig.getPass()));
         }
-        emailRepository.updateById(emailConfig);
+        updateById(emailConfig);
         return emailConfig;
     }
 
     @Override
     @Cacheable(key = "'config'")
     public EmailConfig find() {
-        return emailRepository.selectById(1L);
+        return getById(1L);
     }
 
     @Override

@@ -13,6 +13,6 @@ import java.util.List;
 public interface RolesMenusService extends CommonService<RolesMenus> {
     List<Long> queryMenuIdByRoleId(Long id);
     List<Long> queryRoleIdByMenuId(Long id);
-    int removeByRoleId(Long id);
-    int removeByMenuId(Long id);
+    boolean removeByRoleId(Long id);
+    boolean removeByMenuId(Long id);
 }

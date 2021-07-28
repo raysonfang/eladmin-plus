@@ -83,9 +83,7 @@ public class LogServiceImpl extends CommonServiceImpl<LogMapper, Log> implements
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeByLogType(String logType) {
-        UpdateWrapper<Log> wrapper = new UpdateWrapper<>();
-        wrapper.lambda().eq(Log::getLogType, logType);
-        return logMapper.delete(wrapper) > 0;
+        return lambdaUpdate().eq(Log::getLogType, logType).remove();
     }
     
     @Override

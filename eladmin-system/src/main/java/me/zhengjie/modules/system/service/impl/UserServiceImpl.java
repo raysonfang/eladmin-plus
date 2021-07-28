@@ -82,14 +82,16 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
             Map<Long, DeptDto> deptMap = deptService.queryAll().parallelStream()
                     .collect(Collectors.toMap(DeptDto::getId, Function.identity(), (x,y) -> x));
 
-            QueryWrapper<UsersRoles> userRoleWrapper = new QueryWrapper<>();
-            userRoleWrapper.lambda().in(UsersRoles::getUserId, userDtos.stream().map(UserDto::getId).collect(Collectors.toSet()));
-            Map<Long, Set<UsersRoles>> usersRolesMap = usersRolesMapper.selectList(userRoleWrapper).stream()
+            Map<Long, Set<UsersRoles>> usersRolesMap = usersRolesService.lambdaQuery()
+                    .in(UsersRoles::getUserId, userDtos.stream().map(UserDto::getId).collect(Collectors.toSet()))
+                    .list()
+                    .stream()
                     .collect(Collectors.groupingBy(UsersRoles::getUserId, Collectors.toSet()));
 
-            QueryWrapper<UsersJobs> userJobWrapper = new QueryWrapper<>();
-            userJobWrapper.lambda().in(UsersJobs::getUserId, userDtos.stream().map(UserDto::getId).collect(Collectors.toList()));
-            Map<Long, List<UsersJobs>> usersJobsMap = usersJobsMapper.selectList(userJobWrapper).stream()
+            Map<Long, List<UsersJobs>> usersJobsMap = usersJobsService.lambdaQuery()
+                    .in(UsersJobs::getUserId, userDtos.stream().map(UserDto::getId).collect(Collectors.toList()))
+                    .list()
+                    .stream()
                     .collect(Collectors.groupingBy(UsersJobs::getUserId));
 
             userDtos.forEach(user -> {
@@ -132,9 +134,7 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
 
     @Override
     public User getByUsername(String userName) {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(User::getUsername, userName);
-        User user = userMapper.selectOne(wrapper);
+        User user = lambdaQuery().eq(User::getUsername, userName).one();
         /*if (user == null) {
             throw new EntityNotFoundException(User.class, "username", userName);
         }*/
@@ -151,12 +151,10 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
     }
 
     private User getByEmail(String email) {
-        Wrapper<User> wrapper = new QueryWrapper<User>().eq("email", email);
-        return userMapper.selectOne(wrapper);
+        return lambdaQuery().eq(User::getEmail, email).one();
     }
     private User getByPhone(String phone) {
-        Wrapper<User> wrapper = new QueryWrapper<User>().eq("phone", phone);
-        return userMapper.selectOne(wrapper);
+        return lambdaQuery().eq(User::getPhone, phone).one();
     }
 
     @Override
@@ -272,12 +270,10 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updatePass(String username, String encryptPassword) {
-        UpdateWrapper<User> updater = new UpdateWrapper<>();
-        updater.lambda().eq(User::getUsername, username);
         User user = new User();
         user.setPassword(encryptPassword);
         user.setPwdResetTime(new Date());
-        userMapper.update(user, updater);
+        lambdaUpdate().eq(User::getUsername, username).update(user);
         flushCache(username);
     }
 
@@ -314,11 +310,9 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
         if (ObjectUtil.notEqual(user.getId(), user2.getId())) {
             throw new EntityExistException(User.class, "email", email);
         }
-        UpdateWrapper<User> updater = new UpdateWrapper<>();
-        updater.lambda().eq(User::getUsername, username);
         User userUpdate = new User();
         userUpdate.setEmail(email);
-        userMapper.update(userUpdate, updater);
+        lambdaUpdate().eq(User::getUsername, username).update(userUpdate);
     }
 
     @Override
@@ -327,13 +321,11 @@ public class UserServiceImpl extends CommonServiceImpl<UserMapper, User> impleme
         if (ObjectUtil.notEqual(resources.getId(), user2.getId())) {
             throw new EntityExistException(User.class, "phone", resources.getPhone());
         }
-        UpdateWrapper<User> updater = new UpdateWrapper<>();
-        updater.lambda().eq(User::getId, resources.getId());
         User userUpdate = new User();
         userUpdate.setPhone(resources.getPhone());
         userUpdate.setGender(resources.getGender());
         userUpdate.setNickName(resources.getNickName());
-        userMapper.update(userUpdate, updater);
+        lambdaUpdate().eq(User::getId, resources.getId()).update(userUpdate);
         redisUtils.del("user::username:" + resources.getUsername());
     }
 

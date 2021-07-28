@@ -13,6 +13,6 @@ import java.util.List;
 public interface DeploysServersService extends CommonService<DeploysServers> {
     List<Long> queryDeployIdByServerId(Long id);
     List<Long> queryServerIdByDeployId(Long id);
-    int removeByDeployId(Long id);
-    int removeByServerId(Long id);
+    boolean removeByDeployId(Long id);
+    boolean removeByServerId(Long id);
 }

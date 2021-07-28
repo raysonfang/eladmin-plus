@@ -26,9 +26,7 @@ public class UsersJobsServiceImpl extends CommonServiceImpl<UsersJobsMapper, Use
 
     @Override
     public List<Long> queryUserIdByJobId(Long id) {
-        LambdaQueryWrapper<UsersJobs> query = new LambdaQueryWrapper<>();
-        query.eq(UsersJobs::getJobId, id);
-        return usersJobsMapper.selectList(query).stream().map(UsersJobs::getUserId)
+        return lambdaQuery().eq(UsersJobs::getJobId, id).list().stream().map(UsersJobs::getUserId)
                 .collect(Collectors.toList());
     }
 
@@ -42,17 +40,13 @@ public class UsersJobsServiceImpl extends CommonServiceImpl<UsersJobsMapper, Use
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByUserId(Long id) {
-        LambdaUpdateWrapper<UsersJobs> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(UsersJobs::getUserId, id);
-        return usersJobsMapper.delete(wrapper);
+    public boolean removeByUserId(Long id) {
+        return lambdaUpdate().eq(UsersJobs::getUserId, id).remove();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByJobId(Long id) {
-        LambdaUpdateWrapper<UsersJobs> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(UsersJobs::getJobId, id);
-        return usersJobsMapper.delete(wrapper);
+    public boolean removeByJobId(Long id) {
+        return lambdaUpdate().eq(UsersJobs::getJobId, id).remove();
     }
 }

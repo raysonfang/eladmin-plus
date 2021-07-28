@@ -97,9 +97,10 @@ public class GeneratorServiceImpl extends CommonServiceImpl<ColumnInfoMapper, Co
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<ColumnInfo> getColumns(String tableName) {
-        QueryWrapper<ColumnInfo> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(ColumnInfo::getTableName, tableName).orderByAsc(ColumnInfo::getId);
-        List<ColumnInfo> columnInfos = columnInfoMapper.selectList(wrapper);
+        List<ColumnInfo> columnInfos = lambdaQuery()
+                .eq(ColumnInfo::getTableName, tableName)
+                .orderByAsc(ColumnInfo::getId)
+                .list();
 
         if (CollectionUtil.isNotEmpty(columnInfos)) {
             return columnInfos;

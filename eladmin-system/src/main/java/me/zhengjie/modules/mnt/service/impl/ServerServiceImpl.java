@@ -69,11 +69,7 @@ public class ServerServiceImpl extends CommonServiceImpl<ServerMapper, Server> i
 
     @Override
     public ServerDto findByIp(String ip) {
-        val wrapper = new QueryWrapper<Server>();
-        wrapper.lambda().eq(Server::getIp, ip);
-
-        Server deploy = serverMapper.selectOne(wrapper);
-        return ConvertUtil.convert(deploy, ServerDto.class);
+        return ConvertUtil.convert(lambdaQuery().eq(Server::getIp, ip).one(), ServerDto.class);
     }
 
     @Override

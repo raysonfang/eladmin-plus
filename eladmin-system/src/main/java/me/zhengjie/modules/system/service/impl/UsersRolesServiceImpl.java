@@ -26,34 +26,26 @@ public class UsersRolesServiceImpl extends CommonServiceImpl<UsersRolesMapper, U
 
     @Override
     public List<Long> queryUserIdByRoleId(Long id) {
-        LambdaQueryWrapper<UsersRoles> query = new LambdaQueryWrapper<>();
-        query.eq(UsersRoles::getRoleId, id);
-        return usersRolesMapper.selectList(query).stream().map(UsersRoles::getUserId)
+        return lambdaQuery().eq(UsersRoles::getRoleId, id).list().stream().map(UsersRoles::getUserId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Long> queryRoleIdByUserId(Long id) {
-        LambdaQueryWrapper<UsersRoles> query = new LambdaQueryWrapper<>();
-        query.eq(UsersRoles::getUserId, id);
-        return usersRolesMapper.selectList(query).stream().map(UsersRoles::getRoleId)
+        return lambdaQuery().eq(UsersRoles::getUserId, id).list().stream().map(UsersRoles::getRoleId)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByRoleId(Long id) {
-        LambdaUpdateWrapper<UsersRoles> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(UsersRoles::getRoleId, id);
-        return usersRolesMapper.delete(wrapper);
+    public boolean removeByRoleId(Long id) {
+        return lambdaUpdate().eq(UsersRoles::getRoleId, id).remove();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByUserId(Long id) {
-        LambdaUpdateWrapper<UsersRoles> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(UsersRoles::getUserId, id);
-        return usersRolesMapper.delete(wrapper);
+    public boolean removeByUserId(Long id) {
+        return lambdaUpdate().eq(UsersRoles::getUserId, id).remove();
     }
 
 }

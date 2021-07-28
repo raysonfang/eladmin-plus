@@ -14,6 +14,6 @@ public interface RolesDeptsService extends CommonService<RolesDepts> {
 
     List<Long> queryDeptIdByRoleId(Long id);
     List<Long> queryRoleIdByDeptId(Long id);
-    int removeByRoleId(Long id);
-    int removeByDeptId(Long id);
+    boolean removeByRoleId(Long id);
+    boolean removeByDeptId(Long id);
 }

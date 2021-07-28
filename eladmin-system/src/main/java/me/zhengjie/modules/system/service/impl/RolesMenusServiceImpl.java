@@ -26,34 +26,26 @@ public class RolesMenusServiceImpl extends CommonServiceImpl<RolesMenusMapper, R
 
     @Override
     public List<Long> queryMenuIdByRoleId(Long id) {
-        QueryWrapper<RolesMenus> query = new QueryWrapper<>();
-        query.lambda().eq(RolesMenus::getRoleId, id);
-        return rolesMenusMapper.selectList(query).stream().map(RolesMenus::getMenuId)
+        return lambdaQuery().eq(RolesMenus::getRoleId, id).list().stream().map(RolesMenus::getMenuId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Long> queryRoleIdByMenuId(Long id) {
-        QueryWrapper<RolesMenus> query = new QueryWrapper<>();
-        query.lambda().eq(RolesMenus::getMenuId, id);
-        return rolesMenusMapper.selectList(query).stream().map(RolesMenus::getRoleId)
+        return lambdaQuery().eq(RolesMenus::getMenuId, id).list().stream().map(RolesMenus::getRoleId)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByRoleId(Long id) {
-        UpdateWrapper<RolesMenus> wrapper = new UpdateWrapper<>();
-        wrapper.lambda().eq(RolesMenus::getRoleId, id);
-        return rolesMenusMapper.delete(wrapper);
+    public boolean removeByRoleId(Long id) {
+        return lambdaUpdate().eq(RolesMenus::getRoleId, id).remove();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int removeByMenuId(Long id) {
-        UpdateWrapper<RolesMenus> wrapper = new UpdateWrapper<>();
-        wrapper.lambda().eq(RolesMenus::getMenuId, id);
-        return rolesMenusMapper.delete(wrapper);
+    public boolean removeByMenuId(Long id) {
+        return lambdaUpdate().eq(RolesMenus::getMenuId, id).remove();
     }
 
 }

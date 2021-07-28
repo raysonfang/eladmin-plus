@@ -59,8 +59,8 @@ import java.util.*;
 @CacheConfig(cacheNames = "qiNiu")
 public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, QiniuContent> implements QiNiuService {
 
-    private final QiniuConfigMapper qiNiuConfigRepository;
-    private final QiniuContentMapper qiniuContentRepository;
+    private final QiniuConfigMapper qiniuConfigMapper;
+    private final QiniuContentMapper qiniuContentMapper;
 
     @Value("${qiniu.max-size}")
     private Long maxSize;
@@ -68,7 +68,7 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
     @Override
     @Cacheable(key = "'config'")
     public QiniuConfig find() {
-        return qiNiuConfigRepository.selectById(1L);
+        return qiniuConfigMapper.selectById(1L);
     }
 
     @Override
@@ -80,20 +80,20 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
         if (!(qiniuConfig.getHost().toLowerCase().startsWith(http)||qiniuConfig.getHost().toLowerCase().startsWith(https))) {
             throw new BadRequestException("外链域名必须以http://或者https://开头");
         }
-        qiNiuConfigRepository.updateById(qiniuConfig);
+        qiniuConfigMapper.updateById(qiniuConfig);
         return qiniuConfig;
     }
 
     @Override
     public PageInfo<?> queryAll(QiniuContentQueryParam query, Pageable pageable){
         IPage<QiniuContent> page = PageUtil.toMybatisPage(pageable);
-        IPage<QiniuContent> pageList = qiniuContentRepository.selectPage(page, QueryHelpMybatisPlus.getPredicate(query));
+        IPage<QiniuContent> pageList = qiniuContentMapper.selectPage(page, QueryHelpMybatisPlus.getPredicate(query));
         return ConvertUtil.convertPage(pageList, QiniuContentDto.class);
     }
 
     @Override
     public List<QiniuContent> queryAll(QiniuContentQueryParam query) {
-        return qiniuContentRepository.selectList(QueryHelpMybatisPlus.getPredicate(query));
+        return qiniuContentMapper.selectList(QueryHelpMybatisPlus.getPredicate(query));
     }
 
     @Override
@@ -110,14 +110,14 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
         String upToken = auth.uploadToken(qiniuConfig.getBucket());
         try {
             String key = file.getOriginalFilename();
-            if(qiniuContentRepository.findByKey(key) != null) {
+            if(qiniuContentMapper.findByKey(key) != null) {
                 key = QiNiuUtil.getKey(key);
             }
             Response response = uploadManager.put(file.getBytes(), key, upToken);
             //解析上传成功的结果
 
             DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
-            QiniuContent content = qiniuContentRepository.findByKey(FileUtil.getFileNameNoEx(putRet.key));
+            QiniuContent content = qiniuContentMapper.findByKey(FileUtil.getFileNameNoEx(putRet.key));
             if(content == null){
                 //存入数据库
                 QiniuContent qiniuContent = new QiniuContent();
@@ -127,7 +127,7 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
                 qiniuContent.setKey(FileUtil.getFileNameNoEx(putRet.key));
                 qiniuContent.setUrl(qiniuConfig.getHost()+"/"+putRet.key);
                 qiniuContent.setSize(FileUtil.getSize(Integer.parseInt(file.getSize()+"")));
-                qiniuContentRepository.insert(qiniuContent);
+                qiniuContentMapper.insert(qiniuContent);
                 return qiniuContent;
             }
             return content;
@@ -138,7 +138,7 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
 
     @Override
     public QiniuContent findByContentId(Long id) {
-        return qiniuContentRepository.selectById(id);
+        return qiniuContentMapper.selectById(id);
     }
 
     @Override
@@ -165,9 +165,9 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
         BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             bucketManager.delete(content.getBucket(), content.getKey() + "." + content.getSuffix());
-            qiniuContentRepository.deleteById(content);
+            qiniuContentMapper.deleteById(content);
         } catch (QiniuException ex) {
-            qiniuContentRepository.deleteById(content);
+            qiniuContentMapper.deleteById(content);
         }
     }
 
@@ -197,7 +197,7 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
                 continue;
             }
             for (FileInfo item : items) {
-                if(qiniuContentRepository.findByKey(FileUtil.getFileNameNoEx(item.key)) == null){
+                if(qiniuContentMapper.findByKey(FileUtil.getFileNameNoEx(item.key)) == null){
                     qiniuContent = new QiniuContent();
                     qiniuContent.setSize(FileUtil.getSize(Integer.parseInt(item.fsize+"")));
                     qiniuContent.setSuffix(FileUtil.getExtensionName(item.key));
@@ -205,7 +205,7 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
                     qiniuContent.setType(config.getType());
                     qiniuContent.setBucket(config.getBucket());
                     qiniuContent.setUrl(config.getHost()+"/"+item.key);
-                    qiniuContentRepository.insert(qiniuContent);
+                    qiniuContentMapper.insert(qiniuContent);
                 }
             }
         }
@@ -221,7 +221,7 @@ public class QiNiuServiceImpl extends CommonServiceImpl<QiniuContentMapper, Qini
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(String type) {
-        qiNiuConfigRepository.updateType(type);
+        qiniuConfigMapper.updateType(type);
     }
 
     @Override
